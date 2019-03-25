@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 <head><title>脚注生成器</title><style type="text/css">button{height:5em;width:5em;}</style></head>
 <body>
 脚注内容：<br><textarea id="note_content_input" style="width:50em;height:5em;" onfocus="select()" oninput="gen()">注：</textarea><button onclick="counter_input.value=parseInt(counter_input.value)+1;">Next</button><br>
@@ -23,8 +23,8 @@
         var ref_content="<sup><img alt=\"note\" class=\"footnote\" src=\"../Images/note.png\"/></sup>";
         var ref_template="<a class=\"duokan-footnote\" epub:type=\"noteref\" href=\"#{note_id}\" id=\"{ref_id}\">{ref_content}</a>";
         var note_id_template="note";
-        var ref_id_template="ref";
-        var note_template="    <aside epub:type=\"footnote\" id=\"{note_id}\">\n      <ol class=\"duokan-footnote-content\">\n        <li class=\"duokan-footnote-item\" id=\"{note_id}\" value=\"{counter}\">{note_content}</li>\n      </ol>\n    </aside>";
+        var ref_id_template="note_ref";
+        var note_template="<aside epub:type=\"footnote\" id=\"{note_id}\"><a href=\"#{ref_id}\"></a><ol class=\"duokan-footnote-content\"  style=\"list-style:none\"><li class=\"duokan-footnote-item\" id=\"{note_id}\" value=\"{counter}\">\n{note_content}\n</li></ol></aside>";
     function copy(ele){ele.select();document.execCommand("Copy");}
     function gen()
     {
@@ -33,7 +33,7 @@
         var note_id=note_id_template+counter;
         var ref_id=ref_id_template+counter;
         var note_content=note_content_input.value;
-        note_output.value=note_template.replace("{note_id}",note_id).replace("{note_id}",note_id).replace("{counter}",counter).replace("{note_content}",note_content);
+        note_output.value=note_template.replace("{note_id}",note_id).replace("{note_id}",note_id).replace("{ref_id}",ref_id).replace("{counter}",counter).replace("{note_content}",note_content);
         ref_output.value=ref_template.replace("{note_id}",note_id).replace("{ref_id}",ref_id).replace("{ref_content}",ref_content);
     }
     ref_content_input.value=ref_content;
