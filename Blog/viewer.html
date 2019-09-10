@@ -63,7 +63,7 @@
             font-weight: bold;
         }
 
-        .title0 {
+        #main>.title0 {
             font-size: 1.5em;
             text-indent: 0;
             text-align: center !important;
@@ -139,7 +139,7 @@
         var n = GetQueryString("n");
         var log = document.getElementById("log");
         var main = document.getElementById("main");
-        //log.innerHTML += "Title:" + title + ";";
+        log.innerHTML += "" + n + ";";
         //var key = title + "_" + n;
         //var TOC;
         var loader;
@@ -249,7 +249,7 @@
             return r;
         }
         function ReplaceSVG() {
-            console.log("SVG");
+            //console.log("SVG");
             [].forEach.call(document.getElementsByTagName("img"), function (e) {
                 if (e.src.indexOf("svg") > 0) {
                     let loadsvg = new XMLHttpRequest();
