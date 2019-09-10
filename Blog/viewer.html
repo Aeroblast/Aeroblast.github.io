@@ -144,7 +144,7 @@
         //var TOC;
         var loader;
         var ok = false;
-        var txtpath="Text/"+n+".txt";
+        var txtpath = "Blog/Text/" + n + ".atxt";
         LoadContent();//LoadContent->RenderContent
         function LoadContent() {
             loader = new XMLHttpRequest();
@@ -204,7 +204,7 @@
                 "<p class='aligned' style='text-align:$1'>$2</p>",
                 "",
                 "",
-                "<div class='illu'><img class='illu' src='$1'></div>",
+                "<div class='illu'><img class='illu' src='Blog/Images/$1'></div>",
                 "<b>$1</b>",
                 "<p class='title0'>$1</p>",
                 "<ruby>$2<rt>$1</rt></ruby>",
@@ -217,6 +217,7 @@
             );
             var r = c;
             var matched = true;
+            var imgpath;
             while (matched) {
                 matched = false;
                 for (var i = 0; i < reg.length; i++) {
@@ -227,15 +228,18 @@
                             case 1://[note]
                                 rep = "<a class='note' onclick='Footnote(" + note_count + ")'><sup>注</sup></a>";
                                 note_count++;
+                                r = r.replace(reg[i], rep);
                                 break;
                             case 2://[note=...]
                                 notes.push(match[1]);
+                                r = r.replace(reg[i], rep);
                                 break;
-
+                            default:
+                                r = r.replace(reg[i], rep);
                                 break;
                         }
                         matched = true;
-                        r = r.replace(reg[i], rep);
+
                         break;
                     }
                 }
@@ -254,7 +258,7 @@
                         if (loadsvg.readyState == loadsvg.DONE) {
                             let pa = e.parentNode;
                             let svgcontent = loadsvg.responseText;
-                            svgcontent = svgcontent.replace("../Images", "Novels/" + title + "/Images");
+                            svgcontent = svgcontent.replace("../Images", "Blog/Images/" + title + "/Images");
                             pa.innerHTML = svgcontent;
                         }
                     }
