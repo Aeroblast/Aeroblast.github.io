@@ -29,7 +29,7 @@
            mainwin.src="viewer.html?n="+name;
        }
        var loader = new XMLHttpRequest();
-            loader.open('GET',  "index.txt?random=" + date.getTime(), true);
+            loader.open('GET',  "index.txt?random=" + (new Date()).getTime(), true);
             loader.onreadystatechange = LoadIndex;
             loader.send(null);
         function LoadIndex()
