@@ -9,8 +9,15 @@
     <META HTTP-EQUIV="expires" CONTENT="0">
     <title>Aero Txt Viewer</title>
     <style>
+        #main.time
+        {
+            text-align: right;
+            font-size: 0.7em;
+            text-indent: 0;
+        }
         body {
-            background: antiquewhite;
+            background: black;
+            color: antiquewhite;
         }
 
         svg {
@@ -198,7 +205,8 @@
                 /(\/\*.*?\*\/)/,
                 /\/\/\/.*/,
                 /\[emphasis\](.*?)\[\/emphasis\]/,
-                /\[s\](.*?)\[\/s\]/
+                /\[s\](.*?)\[\/s\]/,
+                /\[time\](.*?)\[\/time\]/
             );
             var rept = new Array(
                 "<p class='aligned' style='text-align:$1'>$2</p>",
@@ -212,7 +220,8 @@
                 "",//note
                 "",//note
                 "<span class=\"emph\">$1</span>",
-                "<s>$1</s>"
+                "<s>$1</s>",
+                "<p class='time'>$1</p>"
 
             );
             var r = c;
