@@ -59,7 +59,7 @@
         {
             let es=element.split(',');
             let r="";
-            if(e.length>1)
+            if(es.length>1)
             {
                 r="<div onclick=\"LoadBlog('" + es[0] + "')\">" + es[1] + "</div>"
             }
@@ -67,6 +67,7 @@
             {
                 r="<div onclick=\"LoadBlog('" + es[0] + "')\">" + es[0] + "</div>"
             }
+            return r;
             //后面是Tag，以后再说
 
         }
