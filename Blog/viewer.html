@@ -185,9 +185,10 @@
                     //window.scrollTo(0, parseFloat(localStorage.getItem(key)));
                     ok = true;
                 }
-            if (loader.status == 404) {
-                log.innerHTML += "似乎不存在这个文档呢……";
-            }
+                else if (loader.status == 404) {
+                    log.innerHTML += "似乎不存在这个文档呢……";
+                    loader
+                }
         }
 
         var note_count = 0;
