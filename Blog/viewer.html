@@ -70,8 +70,8 @@
             text-align: center !important;
             font-weight: bold;
         }
-        #main>.time
-        {
+
+        #main>.time {
             margin-top: 1em;
             text-align: right;
             font-size: 0.7em;
@@ -136,12 +136,9 @@
 <body>
     <p id="log"></p>
     <div id="main"></div>
+    <script src="util.js"></script>
     <script type="text/javascript">
-        function GetQueryString(name) {
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) return decodeURIComponent(r[2]); return null;
-        }
+
         var date = new Date();
         var n = GetQueryString("n");
         var log = document.getElementById("log");
@@ -187,10 +184,9 @@
                     ReplaceSVG();
                     //window.scrollTo(0, parseFloat(localStorage.getItem(key)));
                     ok = true;
-            }
-            if (loader.status == 404)
-            {
-                log.innerHTML +="似乎不存在这个文档呢……";
+                }
+            if (loader.status == 404) {
+                log.innerHTML += "似乎不存在这个文档呢……";
             }
         }
 
@@ -319,8 +315,8 @@
         function OnCopy(oEvent)//不要给每个p都加空行啦！于是有了这个函数
         {
             oEvent.preventDefault();
-            let s=window.getSelection().toString();
-            let str=s.replace(/\n\n/g,'\n');
+            let s = window.getSelection().toString();
+            let str = s.replace(/\n\n/g, '\n');
             oEvent.clipboardData.setData("text", str);
         }
         //var current = window.location.href.match(/n=([0-9]*)/)[1];

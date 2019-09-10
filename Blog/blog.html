@@ -9,15 +9,14 @@
     <META HTTP-EQUIV="expires" CONTENT="0">
     <title>Blog</title>
     <style>
-        body{
-            background:#101010;
+        body {
+            background: #101010;
             color: antiquewhite;
         }
-        #toc>div:hover
-        {
+
+        #toc>div:hover {
             background: #303030;
         }
-
     </style>
 </head>
 
@@ -25,38 +24,36 @@
     <iframe src="viewer.html?n=welcome" id="mainwin" style="width:80%;position:fixed;left:20%;height:90%;"></iframe>
     <div id="toc" style="position:fixed;width: 18%;left: 2%;height: 100%;">
         这里应该是目录……
-    <div>
-   <script>
-       var mainwin=document.getElementById("mainwin");
-       var n = GetQueryString("n");
-       if(n.length>1)
-       {
-           mainwin.src="viewer.html?n="+n;
-       }
-       function LoadBlog(name)
-       {
-           mainwin.src="viewer.html?n="+name+"&random="+(new Date()).getTime();
-       }
-       var loader = new XMLHttpRequest();
-            loader.open('GET',  "index.txt?random=" + (new Date()).getTime(), true);
-            loader.onreadystatechange = LoadIndex;
-            loader.send(null);
-        function LoadIndex()
-        {
+    </div>
+    <script src="util.js"></script>
+    <script>
+
+        var mainwin = document.getElementById("mainwin");
+        var n = GetQueryString("n");
+        if (n.length > 1) {
+            mainwin.src = "viewer.html?n=" + n;
+        }
+        function LoadBlog(name) {
+            mainwin.src = "viewer.html?n=" + name + "&random=" + (new Date()).getTime();
+        }
+        var loader = new XMLHttpRequest();
+        loader.open('GET', "index.txt?random=" + (new Date()).getTime(), true);
+        loader.onreadystatechange = LoadIndex;
+        loader.send(null);
+        function LoadIndex() {
             if (loader.readyState == 4)
-                if (loader.status == 200) 
-                {
-                    let toc_index= loader.responseText.split("\n");
-                    let toc=document.getElementById('toc');
-                    var s="";
+                if (loader.status == 200) {
+                    let toc_index = loader.responseText.split("\n");
+                    let toc = document.getElementById('toc');
+                    var s = "";
                     toc_index.forEach(element => {
-                        s+="<div onclick=\"LoadBlog('"+element+"')\">"+element+"</div>";
+                        s += "<div onclick=\"LoadBlog('" + element + "')\">" + element + "</div>";
                     });
-                    toc.innerHTML=s;
-        
+                    toc.innerHTML = s;
+
                 }
         }
-   </script>
+    </script>
 </body>
 
 </html>
