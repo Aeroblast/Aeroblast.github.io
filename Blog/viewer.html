@@ -316,7 +316,7 @@
         {
             oEvent.preventDefault();
             let s=window.getSelection().toString();
-            let str=s.replace('\n\n','\n');
+            let str=s.replace(/\n\n/,'\n');
             oEvent.clipboardData.setData("text", str);
         }
         //var current = window.location.href.match(/n=([0-9]*)/)[1];
