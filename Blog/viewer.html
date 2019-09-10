@@ -129,13 +129,6 @@
 <body>
     <p id="log"></p>
     <div id="main"></div>
-    <div id="menu_trigger" onclick="Menu()"></div>
-    <div id="menu" class="menu">
-        <div class="menu_item" onclick="Night()">夜间模式</div>
-        <div class="menu_item last">上一章</div>
-        <div class="menu_item next">下一章</div>
-    </div>
-    <div class="button next">下一章</div>
     <script type="text/javascript">
         function GetQueryString(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -147,8 +140,8 @@
         var log = document.getElementById("log");
         var main = document.getElementById("main");
         log.innerHTML += "Title:" + title + ";";
-        var key = title + "_" + n;
-        var TOC;
+        //var key = title + "_" + n;
+        //var TOC;
         var loader;
         var ok = false;
         var txtpath="Text/"+n+".txt";
@@ -185,7 +178,7 @@
                         main.style.fontSize = "5vw";
                     }
                     ReplaceSVG();
-                    window.scrollTo(0, parseFloat(localStorage.getItem(key)));
+                    //window.scrollTo(0, parseFloat(localStorage.getItem(key)));
                     ok = true;
                 }
         }
@@ -305,11 +298,11 @@
             }
             Menu();
         }
-        var current = window.location.href.match(/n=([0-9]*)/)[1];
-        var last = window.location.href.replace(/n=([0-9])*/, "n=" + (parseInt(current) - 1));
-        var next = window.location.href.replace(/n=([0-9])*/, "n=" + (parseInt(current) + 1));
-        [].forEach.call(document.getElementsByClassName("last"), function (e) { e.onclick = function () { window.open(last, '_self'); }; });
-        [].forEach.call(document.getElementsByClassName("next"), function (e) { e.onclick = function () { window.open(next, '_self'); }; });
+        //var current = window.location.href.match(/n=([0-9]*)/)[1];
+        //var last = window.location.href.replace(/n=([0-9])*/, "n=" + (parseInt(current) - 1));
+        //var next = window.location.href.replace(/n=([0-9])*/, "n=" + (parseInt(current) + 1));
+        //[].forEach.call(document.getElementsByClassName("last"), function (e) { e.onclick = function () { window.open(last, '_self'); }; });
+       // [].forEach.call(document.getElementsByClassName("next"), function (e) { e.onclick = function () { window.open(next, '_self'); }; });
     </script>
 </body>
 
