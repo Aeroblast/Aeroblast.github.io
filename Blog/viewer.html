@@ -9,12 +9,6 @@
     <META HTTP-EQUIV="expires" CONTENT="0">
     <title>Aero Txt Viewer</title>
     <style>
-        #main.time
-        {
-            text-align: right;
-            font-size: 0.7em;
-            text-indent: 0;
-        }
         body {
             background: black;
             color: antiquewhite;
@@ -76,7 +70,13 @@
             text-align: center !important;
             font-weight: bold;
         }
-
+        #main.time
+        {
+            margin-top: 1em;
+            text-align: right;
+            font-size: 0.7em;
+            text-indent: 0;
+        }
 
         #menu_trigger {
             background: transparent;
@@ -312,7 +312,7 @@
             Menu();
         }
         document.addEventListener("copy", OnCopy);
-        function OnCopy(oEvent)
+        function OnCopy(oEvent)//不要给每个p都加空行啦！于是有了这个函数
         {
             oEvent.preventDefault();
             let s=window.getSelection().toString();
