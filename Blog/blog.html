@@ -30,6 +30,7 @@
 
         var mainwin = document.getElementById("mainwin");
         var n = GetQueryString("n");
+        if(n!=null)
         if (n.length > 1) {
             mainwin.src = "viewer.html?n=" + n;
         }
