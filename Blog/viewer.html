@@ -311,6 +311,14 @@
             }
             Menu();
         }
+        document.addEventListener("copy", OnCopy);
+        function OnCopy(oEvent)
+        {
+            oEvent.preventDefault();
+            let s=window.getSelection().toString();
+            let str=s.replace('\n\n','\n');
+            oEvent.clipboardData.setData("text", str);
+        }
         //var current = window.location.href.match(/n=([0-9]*)/)[1];
         //var last = window.location.href.replace(/n=([0-9])*/, "n=" + (parseInt(current) - 1));
         //var next = window.location.href.replace(/n=([0-9])*/, "n=" + (parseInt(current) + 1));
