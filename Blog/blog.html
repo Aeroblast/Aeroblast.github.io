@@ -49,11 +49,26 @@
                     let toc = document.getElementById('toc');
                     var s = "";
                     toc_index.forEach(element => {
-                        s += "<div onclick=\"LoadBlog('" + element + "')\">" + element + "</div>";
+                        s += ReadIndex(element);
                     });
                     toc.innerHTML = s;
 
                 }
+        }
+        function ReadIndex(element)
+        {
+            let es=e.split(',');
+            let r="";
+            if(e.length>1)
+            {
+                r="<div onclick=\"LoadBlog('" + es[0] + "')\">" + es[1] + "</div>"
+            }
+            else
+            {
+                r="<div onclick=\"LoadBlog('" + es[0] + "')\">" + es[0] + "</div>"
+            }
+            //后面是Tag，以后再说
+
         }
     </script>
 </body>
