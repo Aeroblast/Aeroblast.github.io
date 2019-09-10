@@ -35,6 +35,7 @@
         }
         function LoadBlog(name) {
             mainwin.src = "viewer.html?n=" + name + "&random=" + (new Date()).getTime();
+            window.location.search="n="+name;
         }
         var loader = new XMLHttpRequest();
         loader.open('GET', "index.txt?random=" + (new Date()).getTime(), true);
