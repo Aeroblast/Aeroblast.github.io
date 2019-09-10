@@ -9,13 +9,17 @@
     <META HTTP-EQUIV="expires" CONTENT="0">
     <title>Blog</title>
     <style>
+        body{
+            background:#101010;
+            color: antiquewhite;
+        }
 
     </style>
 </head>
 
 <body>
     <iframe src="" id="mainwin" style="width:80%;position:fixed;left:20%;height:90%;"></iframe>
-    <div style="position:fixed;width: 18%;left: 2%;height: 100%;">
+    <div id="toc" style="position:fixed;width: 18%;left: 2%;height: 100%;">
         <div onclick="LoadBlog('20190910_000')">2019</div>
     <div>
    <script>
@@ -23,8 +27,26 @@
        function LoadBlog(name)
        {
            mainwin.src="viewer.html?n="+name;
-
        }
+       var loader = new XMLHttpRequest();
+            loader.open('GET',  "index.txt?random=" + date.getTime(), true);
+            loader.onreadystatechange = LoadIndex;
+            loader.send(null);
+        function LoadIndex()
+        {
+            if (loader.readyState == 4)
+                if (loader.status == 200) 
+                {
+                    let toc_index= loader.responseText.split("\n");
+                    let toc=document.getElementById('toc');
+                    var s="";
+                    toc_index.forEach(element => {
+                        s+="<div onclick=\"LoadBlog('"+element+"')\">"+element+"</div>";
+                    });
+                    toc.innerHTML=s;
+        
+                }
+        }
    </script>
 </body>
 
