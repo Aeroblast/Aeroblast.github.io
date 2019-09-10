@@ -13,20 +13,24 @@
             background:#101010;
             color: antiquewhite;
         }
+        #toc>div:hover
+        {
+            background: #303030;
+        }
 
     </style>
 </head>
 
 <body>
-    <iframe src="" id="mainwin" style="width:80%;position:fixed;left:20%;height:90%;">目录在左侧~</iframe>
+    <iframe src="" id="mainwin" style="width:80%;position:fixed;left:20%;height:90%;"></iframe>
     <div id="toc" style="position:fixed;width: 18%;left: 2%;height: 100%;">
-        <div onclick="LoadBlog('20190910_000')">2019</div>
+        这里应该是目录……
     <div>
    <script>
        var mainwin=document.getElementById("mainwin");
        function LoadBlog(name)
        {
-           mainwin.src="viewer.html?n="+name;
+           mainwin.src="viewer.html?n="+name+"&random="+(new Date()).getTime();
        }
        var loader = new XMLHttpRequest();
             loader.open('GET',  "index.txt?random=" + (new Date()).getTime(), true);
