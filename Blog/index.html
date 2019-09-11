@@ -44,22 +44,17 @@
     <script>
 
         var mainwin = document.getElementById("mainwin");
-        var index=new Array();
-        var n = GetQueryString("n");
-        if (n != null)
-            if (n.length > 1) {
-                LoadBlog(n);
-            }
-        function LoadBlog(i) {
-            let i_n=parseInt(i);
-            let name=index[i_n][0];
-            mainwin.src = "viewer.html?n=" + name +"&"+ RandomQuery();
-            history.pushState({}, index[i_n][1], location.pathname+"?n="+name);
-        }
+        var index = new Array();
         var loader = new XMLHttpRequest();
-        loader.open('GET', "index.txt?"+RandomQuery(), true);
+        loader.open('GET', "index.txt?" + RandomQuery(), true);
         loader.onreadystatechange = LoadIndex;
         loader.send(null);
+        function LoadBlog(i) {
+            let i_n = parseInt(i);
+            let name = index[i_n][0];
+            mainwin.src = "viewer.html?n=" + name + "&" + RandomQuery();
+            history.pushState({}, index[i_n][1], location.pathname + "?n=" + name);
+        }
         function LoadIndex() {
             if (loader.readyState == 4)
                 if (loader.status == 200) {
@@ -72,7 +67,7 @@
                     toc.innerHTML = s;
 
                 }
-        }
+        }     
         function ReadIndex(element) {
             let es = element.split(',');
             let r = "";
@@ -86,7 +81,13 @@
             index.push(es);
             return r;
             //后面是Tag，以后再说
-
+        }
+        function LoadQuery() {
+            var n = GetQueryString("n");
+            if (n != null)
+                if (n.length > 1) {
+                    mainwin.src = "viewer.html?n=" + n + "&" + RandomQuery();
+                }
         }
     </script>
 </body>
