@@ -17,12 +17,25 @@
         #toc>div:hover {
             background: #303030;
         }
+
+        #toc>div {
+            border-bottom: #660000 solid 2px;
+        }
+
+        #toc {
+            overflow: scroll;
+        }
+
+        #toc::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
     <div style="-webkit-overflow-scrolling:touch; overflow:hidden;width:75%;position:fixed;left:20%;height:90%;">
-        <iframe src="viewer.html?n=welcome" id="mainwin" style="width: 100%;height: 100%;border: 0 none;overflow-x:hidden;"></iframe>
+        <iframe src="viewer.html?n=welcome" id="mainwin"
+            style="width: 100%;height: 100%;border: 0 none;overflow-x:hidden;"></iframe>
     </div>
     <div id="toc" style="position:fixed;width: 18%;left: 2%;height: 100%;border-right: 1px solid brown">
         这里应该是目录……
@@ -32,16 +45,16 @@
 
         var mainwin = document.getElementById("mainwin");
         var n = GetQueryString("n");
-        if(n!=null)
-        if (n.length > 1) {
-            mainwin.src = "viewer.html?n=" + n;
-        }
+        if (n != null)
+            if (n.length > 1) {
+                LoadBlog(n);
+            }
         function LoadBlog(name) {
-            mainwin.src = "viewer.html?n=" + name + "&random=" + (new Date()).getTime();
-            window.location.search="n="+name;
+            mainwin.src = "viewer.html?n=" + name +"&"+ RandomQuery();
+            history.pushState(state, title, location.pathname+"?n="+name);
         }
         var loader = new XMLHttpRequest();
-        loader.open('GET', "index.txt?random=" + (new Date()).getTime(), true);
+        loader.open('GET', "index.txt?"+RandomQuery(), true);
         loader.onreadystatechange = LoadIndex;
         loader.send(null);
         function LoadIndex() {
@@ -57,17 +70,14 @@
 
                 }
         }
-        function ReadIndex(element)
-        {
-            let es=element.split(',');
-            let r="";
-            if(es.length>1)
-            {
-                r="<div onclick=\"LoadBlog('" + es[0] + "')\">" + es[1] + "</div>"
+        function ReadIndex(element) {
+            let es = element.split(',');
+            let r = "";
+            if (es.length > 1) {
+                r = "<div onclick=\"LoadBlog('" + es[0] + "')\">" + es[1] + "</div>"
             }
-            else
-            {
-                r="<div onclick=\"LoadBlog('" + es[0] + "')\">" + es[0] + "</div>"
+            else {
+                r = "<div onclick=\"LoadBlog('" + es[0] + "')\">" + es[0] + "</div>"
             }
             return r;
             //后面是Tag，以后再说
