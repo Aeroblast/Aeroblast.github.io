@@ -15,12 +15,12 @@ filepath=blogdir+'/Text/'+filename+'.atxt'
 copyfile(postdata, filepath)
 
 a=open(filepath, 'a') 
-a.write('\r\n[time]'+message+'[/time]')
+a.write('\n[time]'+message+'[/time]')
 a.close()
 
 index=blogdir+'/index.txt'
 a=open(index, 'a') 
-a.write('\r\n'+filename)
+a.write('\n'+filename)
 a.close()
 print('End')
 os.system("pause")
