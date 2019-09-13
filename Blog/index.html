@@ -41,7 +41,7 @@
 
 <body>
     <div style="-webkit-overflow-scrolling:touch; overflow-x:hidden;width:75%;position:fixed;left:20%;height:90%;">
-        <iframe src="viewer.html?n=welcome" id="mainwin"
+        <iframe src="" id="mainwin"
             style="width: 100%;height: 100%;border: 0 none;overflow-x:hidden;"></iframe>
     </div>
     <div id="toc" style="position:fixed;width: 18%;left: 2%;height: 100%;border-right: 1px solid brown">
@@ -56,12 +56,10 @@
         loader.open('GET', "index.txt?" + RandomQuery(), true);
         loader.onreadystatechange = LoadIndex;
         loader.send(null);
-        function LoadBlog(i) {
-            let i_n = parseInt(i);
-            let name = index[i_n][0];
-            mainwin.src = "viewer.html?n=" + name + "&" + RandomQuery();
-            history.pushState({}, index[i_n][1], location.pathname + "?n=" + name);
-        }
+
+        /////////////Main//////////////
+        //LoadIndex()-LoadQuery()
+
         function LoadIndex() {
             if (loader.readyState == 4)
                 if (loader.status == 200) {
@@ -74,7 +72,24 @@
                     toc.innerHTML = s;
                     LoadQuery();
                 }
-        }     
+        } 
+        function LoadQuery() {
+            var n = GetQueryString("n");
+            if (n != null)
+                if (n.length > 1) {
+                    mainwin.src = "viewer.html?n=" + n + "&" + RandomQuery();
+                    return;
+                }
+            mainwin.src="viewer.html?n=welcome";
+        }
+
+        ////////////////helpers/////////////
+        function LoadBlog(i) {
+            let i_n = parseInt(i);
+            let name = index[i_n][0];
+            mainwin.src = "viewer.html?n=" + name + "&" + RandomQuery();
+            history.pushState({}, index[i_n][1], location.pathname + "?n=" + name);
+        }    
         function ReadIndex(element) {
             let es = element.split(',');
             let r = "";
@@ -88,13 +103,6 @@
             index.push(es);
             return r;
             //后面是Tag，以后再说
-        }
-        function LoadQuery() {
-            var n = GetQueryString("n");
-            if (n != null)
-                if (n.length > 1) {
-                    mainwin.src = "viewer.html?n=" + n + "&" + RandomQuery();
-                }
         }
     </script>
 </body>
