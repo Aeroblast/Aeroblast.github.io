@@ -216,7 +216,10 @@
                 /\/\/\/.*/,
                 /\[emphasis\](.*?)\[\/emphasis\]/,
                 /\[s\](.*?)\[\/s\]/,
-                /\[time\](.*?)\[\/time\]/
+                /\[time\](.*?)\[\/time\]/,
+                /\[h4\](.*?)\[\/h4\]/,
+                /\[size=(.*?)\](.*?)\[\/size\]/,
+                /\[link=(.*?)\](.*?)\[\/link\]/
             );
             var rept = new Array(
                 "<p class='aligned' style='text-align:$1'>$2</p>",
@@ -231,7 +234,10 @@
                 "",//note
                 "<span class=\"emph\">$1</span>",
                 "<s>$1</s>",
-                "<p class='time'>$1</p>"
+                "<p class='time'>$1</p>",
+                "<h4>$1</h4>",
+                "<span style=\"font-size:$1em\">$2</span>",
+                "<a href=\"$1\">$2</a>"
 
             );
             var r = c;
