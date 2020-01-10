@@ -81,6 +81,7 @@
                 if (loader.status == 200) {
                     let toc_index = loader.responseText.split("\n");
                     var s = "";
+                    if(query_tags){s+="Tag Filter:"+query_tags+"<br>";}
                     toc_index.forEach(element => {
                         s += ReadIndex(element);
                     });
