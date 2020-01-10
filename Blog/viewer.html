@@ -13,7 +13,7 @@
             overflow-x: hidden;
             background: #101010;
             color: antiquewhite;
-            word-break: break-all;
+            word-wrap: break-word;
         }
 
         a:link {
@@ -412,7 +412,7 @@
         }
         function SpoilerShift(e) {
             if (e.parentNode.style.height == "auto") {
-                e.parentNode.style.height = "1em";
+                e.parentNode.style.height = "1.3em";
             } else
                 e.parentNode.style.height = "auto";
         }
