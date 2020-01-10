@@ -67,7 +67,7 @@
 
         var query_tag_string = "&tags=" + GetQueryString("tags");
         var query_tags = GetQueryString("tags");
-        if (query_tags==null||query_tags=="") query_tag_string = "";
+        if (query_tags == null || query_tags == "") query_tag_string = "";
 
         loader.open('GET', "index.txt?" + RandomQuery(), true);
         loader.onreadystatechange = LoadIndex;
@@ -131,12 +131,13 @@
             let es = element.split(',');
             let r = "";
             let select = "false";
-            if(query_tags)
-            for (let i = 2; i < es.length; i++) {//Tags check
-                if (IsInQueryTags(es[i])) {
-                    select = "true";
+            if (query_tags)
+                for (let i = 2; i < es.length; i++) {//Tags check
+                    if (IsInQueryTags(es[i])) {
+                        select = "true";
+                    }
                 }
-            }
+            else { select = "true"; }
             select = " selected=\"" + select + "\"";
             if (es.length > 1 && es[1].length > 0) {
                 r = "<div onclick=\"LoadBlog('" + index.length + "')\"" + select + ">" + es[1] + "</div>"
