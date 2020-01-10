@@ -38,6 +38,10 @@
         #toc::-webkit-scrollbar {
             display: none;
         }
+
+        *[selected="false"] {
+            display: none;
+        }
     </style>
 </head>
 
@@ -45,7 +49,8 @@
     <div style="-webkit-overflow-scrolling:touch; overflow-x:hidden;width:75%;position:fixed;left:20%;height:98%;">
         <iframe src="" id="mainwin" style="width: 100%;height: 100%;border: 0 none;overflow-x:hidden;"></iframe>
     </div>
-    <div id="toc" style="position:fixed;width: 18%;left: 2%;height:100%;border-right: 1px solid brown;background:rgba(0,0,0,0.5)">
+    <div id="toc"
+        style="position:fixed;width: 18%;left: 2%;height:100%;border-right: 1px solid brown;background:rgba(0,0,0,0.5)">
         这里应该是目录……
     </div>
     <div style="position:fixed;width: 18%;left: 2%;height:2em;bottom: 0;border-top: 1px solid brown;border-right: 1px solid brown"
@@ -59,6 +64,11 @@
         var index = new Array();
         var loader = new XMLHttpRequest();
         var toc = document.getElementById('toc');
+
+        var query_tag_string = "&tags=" + GetQueryString("tags");
+        var query_tags = GetQueryString("tags").split(",");
+        if (query_tags.length == 1 && query_tags[0] == "") query_tag_string = "";
+
         loader.open('GET', "index.txt?" + RandomQuery(), true);
         loader.onreadystatechange = LoadIndex;
         loader.send(null);
@@ -70,17 +80,19 @@
             if (loader.readyState == 4)
                 if (loader.status == 200) {
                     let toc_index = loader.responseText.split("\n");
-
                     var s = "";
                     toc_index.forEach(element => {
                         s += ReadIndex(element);
                     });
                     toc.innerHTML = s;
-                    LoadQuery();
+                    LoadDoc();
                 }
         }
-        function LoadQuery() {
-            var n = GetQueryString("n");
+        function ReloadIndex() {
+
+        }
+        function LoadDoc() {
+            let n = GetQueryString("n");
             if (n != null)
                 if (n.length > 1) {
                     mainwin.src = "viewer.html?n=" + n + "&" + RandomQuery();
@@ -88,6 +100,7 @@
                 }
             mainwin.src = "viewer.html?n=welcome";
         }
+
         var list_state = 0;
         var list_shift_button = document.getElementById("ListShiftButton");
         function ListShift() {
@@ -103,22 +116,36 @@
         function LoadBlog(i) {
             let i_n = parseInt(i);
             let name = index[i_n][0];
+            mainwin.onloadend = function () { mainwin.contentDocument.getElementById("info").innerHTML = index[i_n]; }
             mainwin.src = "viewer.html?n=" + name + "&" + RandomQuery();
-            history.pushState({}, index[i_n][1], location.pathname + "?n=" + name);
+            history.pushState({}, index[i_n][1], location.pathname + "?n=" + name + query_tag_string);
+        }
+        function IsInQueryTags(s) {
+            if (s == "") return false;
+            for (let i = 0; i < query_tags.length; i++) {
+                if (query_tags[i] != "" && query_tags[i] == s) return true;
+            }
+            return false;
         }
         function ReadIndex(element) {
             let es = element.split(',');
             let r = "";
+            let select = "false";
+            for (let i = 2; i < es.length; i++) {//Tags check
+                if (IsInQueryTags(es[i])) {
+                    select = "true";
+                }
+            }
+            select = " selected=\"" + select + "\"";
             if (es.length > 1 && es[1].length > 0) {
-                r = "<div onclick=\"LoadBlog('" + index.length + "')\">" + es[1] + "</div>"
+                r = "<div onclick=\"LoadBlog('" + index.length + "')" + select + "\">" + es[1] + "</div>"
             }
             else {
                 es.push(es[0]);
-                r = "<div onclick=\"LoadBlog('" + index.length + "')\">" + es[0] + "</div>"
+                r = "<div onclick=\"LoadBlog('" + index.length + "')" + select + "\">" + es[0] + "</div>"
             }
             index.push(es);
             return r;
-            //后面是Tag，以后再说
         }
     </script>
 </body>
