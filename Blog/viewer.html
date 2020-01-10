@@ -370,14 +370,15 @@
             console.log(pw);
             let r=CryptoJS.AES.decrypt(txtcontent[1],pw).toString(CryptoJS.enc.Utf8);
             r=r.split('\n');
-            if(r[0]==pw)
+            if(r.shift()==pw)
             {
-                r[0]="解密成功。";
+                log.innerHTML+="解密成功;";
                 txtcontent=r;
+                document.getElementById("pw_zone").style.display = "none";
                 RenderContent();
             }else
             {
-                log.innerHTML+=("Fail");
+                log.innerHTML+=("Fail;");
             }
         }
 
