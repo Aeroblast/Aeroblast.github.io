@@ -93,7 +93,7 @@
         function ReadIndex(element) {
             let es = element.split(',');
             let r = "";
-            if (es.length > 1) {
+            if (es.length > 1&&es[1].length>0) {
                 r = "<div onclick=\"LoadBlog('" + index.length + "')\">" + es[1] + "</div>"
             }
             else {
