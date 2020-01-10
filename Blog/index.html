@@ -69,6 +69,10 @@
         var query_tags = GetQueryString("tags");
         if (query_tags == null || query_tags == "") query_tag_string = "";else query_tags=query_tags.split(",");
 
+        var query_pw=GetQueryString("pw");
+        if(query_pw)query_pw="&pw="+query_pw;
+        else query_pw="";
+
         loader.open('GET', "index.txt?" + RandomQuery(), true);
         loader.onreadystatechange = LoadIndex;
         loader.send(null);
@@ -117,9 +121,9 @@
         function LoadBlog(i) {
             let i_n = parseInt(i);
             let name = index[i_n][0];
-            mainwin.onloadend = function () { mainwin.contentDocument.getElementById("info").innerHTML = index[i_n]; }
-            mainwin.src = "viewer.html?n=" + name + "&" + RandomQuery();
-            history.pushState({}, index[i_n][1], location.pathname + "?n=" + name + query_tag_string);
+            mainwin.onload = function () { mainwin.contentDocument.getElementById("info").innerHTML = index[i_n]; }
+            mainwin.src = "viewer.html?n=" + name + "&" + RandomQuery()+query_pw;
+            history.pushState({}, index[i_n][1], location.pathname + "?n=" + name + query_tag_string+query_pw);
         }
         function IsInQueryTags(s) {
             if (s == "") return false;

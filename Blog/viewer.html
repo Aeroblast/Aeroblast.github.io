@@ -211,6 +211,8 @@
                         pw.onkeydown = function (e) {
                             if (e.key == 'Enter') { TryLoadEncrpyted(pw.value); }
                         }
+                        let q_pw = GetQueryString("pw");
+                        if (q_pw) { TryLoadEncrpyted(q_pw); }
                         return;
                     }
                     RenderContent();
