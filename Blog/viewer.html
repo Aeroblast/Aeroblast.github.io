@@ -153,7 +153,7 @@
 
 <body>
     <p id="log"></p>
-    <p id="pw_zone">加密内容：<input id="pw_input" type="text" οnkeydown="if(event.key=='Enter')TryLoadEncrpyted(this.value)"/></p>
+    <p id="pw_zone">加密内容：<input id="pw_input" type="text"/></p>
     <div id="main"></div>
     <script src="util.js"></script>
     <script src="aes.js"></script>
@@ -183,6 +183,11 @@
                     txtcontent = loader.responseText.split("\n");
                     if (txtcontent[0] == "ENCRYPTED") {
                         document.getElementById("pw_zone").style.display = "block";
+                        var pw=document.getElementById("pw_input");
+                        pw.onkeydown=function(e)
+                        {
+                            if(e.key=='Enter'){TryLoadEncrpyted(pw.value);}
+                        }
                         return;
                     }
                     RenderContent();
@@ -190,7 +195,6 @@
                 }
                 else if (loader.status == 404) {
                     log.innerHTML += "似乎不存在这个文档呢……";
-                    loader
                 }
         }
         function RenderContent() {
@@ -373,7 +377,7 @@
                 RenderContent();
             }else
             {
-                log("Fail");
+                log.innerHTML+=("Fail");
             }
         }
 
