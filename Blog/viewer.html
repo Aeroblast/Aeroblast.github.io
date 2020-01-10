@@ -74,6 +74,17 @@
             font-weight: bold;
         }
 
+        .spoiler {
+            width: 100%;
+            overflow: hidden;
+            height: 1em;
+            padding: 0;
+            padding-left: 0.3em;
+            padding-right: 0.3em;
+            margin: 0;
+            border: 1px solid chocolate;
+        }
+
         #main>.title0 {
             font-size: 1.5em;
             text-indent: 0;
@@ -148,12 +159,16 @@
         #pw_zone {
             display: none;
         }
+
+        #pw_input {
+            font-size: 16px;
+        }
     </style>
 </head>
 
 <body>
     <p id="log"></p>
-    <p id="pw_zone">加密内容：<input id="pw_input" type="text"/></p>
+    <p id="pw_zone">加密内容：<input id="pw_input" type="text" /></p>
     <div id="main"></div>
     <div id="info"></div>
     <script src="util.js"></script>
@@ -183,10 +198,9 @@
                     txtcontent = loader.responseText.split("\n");
                     if (txtcontent[0] == "ENCRYPTED") {
                         document.getElementById("pw_zone").style.display = "block";
-                        var pw=document.getElementById("pw_input");
-                        pw.onkeydown=function(e)
-                        {
-                            if(e.key=='Enter'){TryLoadEncrpyted(pw.value);}
+                        var pw = document.getElementById("pw_input");
+                        pw.onkeydown = function (e) {
+                            if (e.key == 'Enter') { TryLoadEncrpyted(pw.value); }
                         }
                         return;
                     }
@@ -206,7 +220,10 @@
                 var cla = "";
                 if (c.length == 0) c = "<br>";
                 if (c[0] == "「" || c[0] == "『" || c[0] == "（") cla += " drawout";
-                code += "<p id='line" + line + "' class='" + cla + "'>" + c + "</p>";
+                if (c.startsWith("<div") || c.startsWith("</div"))
+                    code += c;
+                else
+                    code += "<p id='line" + line + "' class='" + cla + "'>" + c + "</p>";
                 line++;
             });
             main.innerHTML = code;
@@ -249,7 +266,10 @@
                 /\[time\](.*?)\[\/time\]/,
                 /\[h4\](.*?)\[\/h4\]/,
                 /\[size=(.*?)\](.*?)\[\/size\]/,
-                /\[link=(.*?)\](.*?)\[\/link\]/
+                /\[link=(.*?)\](.*?)\[\/link\]/,
+                /\[ASIN\](.*?)\[\/ASIN\]/,
+                /\[spoiler\]/,
+                /\[\/spoiler\]/
             );
             var rept = new Array(
                 "<p class='aligned' style='text-align:$1'>$2</p>",
@@ -267,7 +287,10 @@
                 "<p class='time'>$1</p>",
                 "<h4>$1</h4>",
                 "<span style=\"font-size:$1em\">$2</span>",
-                "<a href=\"$1\"target=\"_blank\">$2</a>"
+                "<a href=\"$1\"target=\"_blank\">$2</a>",
+                "ASIN:<a href=\"www.google.com/search?q=$1\" target=\"_blank\">$1</a>",
+                "<div class='spoiler'><div onclick='SpoilerShift(this)'>Spoiler</div>",
+                "</div>"
 
             );
             var r = c;
@@ -365,21 +388,24 @@
             let str = s.replace(/\n\n/g, '\n');
             oEvent.clipboardData.setData("text", str);
         }
-        function TryLoadEncrpyted(pw)
-        {
+        function TryLoadEncrpyted(pw) {
             console.log(pw);
-            let r=CryptoJS.AES.decrypt(txtcontent[1],pw).toString(CryptoJS.enc.Utf8);
-            r=r.split('\n');
-            if(r.shift()==pw)
-            {
-                log.innerHTML+="解密成功;";
-                txtcontent=r;
+            let r = CryptoJS.AES.decrypt(txtcontent[1], pw).toString(CryptoJS.enc.Utf8);
+            r = r.split('\n');
+            if (r.shift() == pw) {
+                log.innerHTML += "解密成功;";
+                txtcontent = r;
                 document.getElementById("pw_zone").style.display = "none";
                 RenderContent();
-            }else
-            {
-                log.innerHTML+=("Fail;");
+            } else {
+                log.innerHTML += ("Fail;");
             }
+        }
+        function SpoilerShift(e) {
+            if (e.parentNode.style.height == "auto") {
+                e.parentNode.style.height = "1em";
+            } else
+                e.parentNode.style.height = "auto";
         }
 
         //var current = window.location.href.match(/n=([0-9]*)/)[1];
