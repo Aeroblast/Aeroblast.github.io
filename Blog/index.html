@@ -24,6 +24,7 @@
             overflow-x:scroll;
             padding-top: 0.2em;
             padding-bottom: 0.2em; 
+            background: #101010;
         }
         #toc>div::-webkit-scrollbar {
             display: none;
@@ -48,7 +49,7 @@
         这里应该是目录……
     </div>
     <div style="position:fixed;width: 18%;left: 2%;height:2em;bottom: 0;border-top: 1px solid brown;border-right: 1px solid brown" onclick="ListShift()">
-        <p style="text-align: center;cursor: pointer;font-weight: bold;margin: 0;">展开/缩小</p>
+        <p id="ListShiftButton" style="text-align: center;cursor: pointer;font-weight: bold;margin: 0;">展开</p>
     </div>
     <script src="util.js"></script>
     <script>
@@ -87,10 +88,11 @@
             mainwin.src="viewer.html?n=welcome";
         }
         var list_state=0;
+        var list_shift_button=document.getElementById("ListShiftButton");
         function ListShift()
         {
-            if(list_state==0){list_state=1;toc.style.width="90%";
-            }else if(list_state==1){list_state=0;toc.style.width="18%";
+            if(list_state==0){list_state=1;toc.style.width="90%";list_shift_button.innerText="缩小";
+            }else if(list_state==1){list_state=0;toc.style.width="18%";list_shift_button.innerText="展开";
             }
 
         }
