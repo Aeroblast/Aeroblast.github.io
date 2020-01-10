@@ -20,12 +20,13 @@
 
         #toc>div {
             border-bottom: #660000 solid 2px;
-            white-space:nowrap;
-            overflow-x:scroll;
+            white-space: nowrap;
+            overflow-x: scroll;
             padding-top: 0.2em;
-            padding-bottom: 0.2em; 
+            padding-bottom: 0.2em;
             background: #101010;
         }
+
         #toc>div::-webkit-scrollbar {
             display: none;
         }
@@ -42,13 +43,13 @@
 
 <body>
     <div style="-webkit-overflow-scrolling:touch; overflow-x:hidden;width:75%;position:fixed;left:20%;height:98%;">
-        <iframe src="" id="mainwin"
-            style="width: 100%;height: 100%;border: 0 none;overflow-x:hidden;"></iframe>
+        <iframe src="" id="mainwin" style="width: 100%;height: 100%;border: 0 none;overflow-x:hidden;"></iframe>
     </div>
-    <div id="toc" style="position:fixed;width: 18%;left: 2%;height:100%;border-right: 1px solid brown">
+    <div id="toc" style="position:fixed;width: 18%;left: 2%;height:100%;border-right: 1px solid brown;background:rgba(0,0,0,0.5)">
         这里应该是目录……
     </div>
-    <div style="position:fixed;width: 18%;left: 2%;height:2em;bottom: 0;border-top: 1px solid brown;border-right: 1px solid brown" onclick="ListShift()">
+    <div style="position:fixed;width: 18%;left: 2%;height:2em;bottom: 0;border-top: 1px solid brown;border-right: 1px solid brown"
+        onclick="ListShift()">
         <p id="ListShiftButton" style="text-align: center;cursor: pointer;font-weight: bold;margin: 0;">展开</p>
     </div>
     <script src="util.js"></script>
@@ -69,7 +70,7 @@
             if (loader.readyState == 4)
                 if (loader.status == 200) {
                     let toc_index = loader.responseText.split("\n");
-                    
+
                     var s = "";
                     toc_index.forEach(element => {
                         s += ReadIndex(element);
@@ -77,7 +78,7 @@
                     toc.innerHTML = s;
                     LoadQuery();
                 }
-        } 
+        }
         function LoadQuery() {
             var n = GetQueryString("n");
             if (n != null)
@@ -85,14 +86,15 @@
                     mainwin.src = "viewer.html?n=" + n + "&" + RandomQuery();
                     return;
                 }
-            mainwin.src="viewer.html?n=welcome";
+            mainwin.src = "viewer.html?n=welcome";
         }
-        var list_state=0;
-        var list_shift_button=document.getElementById("ListShiftButton");
-        function ListShift()
-        {
-            if(list_state==0){list_state=1;toc.style.width="90%";list_shift_button.innerText="缩小";
-            }else if(list_state==1){list_state=0;toc.style.width="18%";list_shift_button.innerText="展开";
+        var list_state = 0;
+        var list_shift_button = document.getElementById("ListShiftButton");
+        function ListShift() {
+            if (list_state == 0) {
+                list_state = 1; toc.style.width = "90%"; list_shift_button.innerText = "缩小";
+            } else if (list_state == 1) {
+                list_state = 0; toc.style.width = "18%"; list_shift_button.innerText = "展开";
             }
 
         }
@@ -103,11 +105,11 @@
             let name = index[i_n][0];
             mainwin.src = "viewer.html?n=" + name + "&" + RandomQuery();
             history.pushState({}, index[i_n][1], location.pathname + "?n=" + name);
-        }    
+        }
         function ReadIndex(element) {
             let es = element.split(',');
             let r = "";
-            if (es.length > 1&&es[1].length>0) {
+            if (es.length > 1 && es[1].length > 0) {
                 r = "<div onclick=\"LoadBlog('" + index.length + "')\">" + es[1] + "</div>"
             }
             else {
