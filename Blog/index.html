@@ -44,8 +44,11 @@
         <iframe src="" id="mainwin"
             style="width: 100%;height: 100%;border: 0 none;overflow-x:hidden;"></iframe>
     </div>
-    <div id="toc" style="position:fixed;width: 18%;left: 2%;height: 100%;border-right: 1px solid brown">
+    <div id="toc" style="position:fixed;width: 18%;left: 2%;height:100%;border-right: 1px solid brown">
         这里应该是目录……
+    </div>
+    <div style="position:fixed;width: 18%;left: 2%;height:2em;bottom: 0;border-top: 1px solid brown;border-right: 1px solid brown" onclick="ListShift()">
+        <p style="text-align: center;cursor: pointer;font-weight: bold;margin: 0;">展开/缩小</p>
     </div>
     <script src="util.js"></script>
     <script>
@@ -53,6 +56,7 @@
         var mainwin = document.getElementById("mainwin");
         var index = new Array();
         var loader = new XMLHttpRequest();
+        var toc = document.getElementById('toc');
         loader.open('GET', "index.txt?" + RandomQuery(), true);
         loader.onreadystatechange = LoadIndex;
         loader.send(null);
@@ -64,7 +68,7 @@
             if (loader.readyState == 4)
                 if (loader.status == 200) {
                     let toc_index = loader.responseText.split("\n");
-                    let toc = document.getElementById('toc');
+                    
                     var s = "";
                     toc_index.forEach(element => {
                         s += ReadIndex(element);
@@ -81,6 +85,14 @@
                     return;
                 }
             mainwin.src="viewer.html?n=welcome";
+        }
+        var list_state=0;
+        function ListShift()
+        {
+            if(list_state==0){list_state=1;toc.style.width="90%";
+            }else if(list_state==1){list_state=0;toc.style.width="18%";
+            }
+
         }
 
         ////////////////helpers/////////////
