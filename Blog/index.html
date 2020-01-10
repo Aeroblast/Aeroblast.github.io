@@ -66,8 +66,8 @@
         var toc = document.getElementById('toc');
 
         var query_tag_string = "&tags=" + GetQueryString("tags");
-        var query_tags = (GetQueryString("tags")||",").split(",");
-        if (query_tags.length == 1 && query_tags[0] == "") query_tag_string = "";
+        var query_tags = GetQueryString("tags");
+        if (query_tags==null||query_tags=="") query_tag_string = "";
 
         loader.open('GET', "index.txt?" + RandomQuery(), true);
         loader.onreadystatechange = LoadIndex;
@@ -131,6 +131,7 @@
             let es = element.split(',');
             let r = "";
             let select = "false";
+            if(query_tags)
             for (let i = 2; i < es.length; i++) {//Tags check
                 if (IsInQueryTags(es[i])) {
                     select = "true";
