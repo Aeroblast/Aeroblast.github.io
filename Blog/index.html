@@ -136,7 +136,8 @@
                 PushState();
             }
             var s = "";
-            if (query_tags) { s += "Tag Search<div class='inline button' onclick='ClearTags()'>❌</div>:<br>" + Tags2HTML(query_tags) + "<br>"; }
+            if (query_tags) { s += "Tag Search<div class='inline button' onclick='ClearTags()'>❌</div>:<br>" + Tags2HTML(query_tags) + "<br><div class='toc_item' style='height:0'></div>"; }
+            
             raw_index.forEach(element => {
                 s += ReadIndex(element);
             });
