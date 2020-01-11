@@ -52,6 +52,9 @@
 
         .inline {
             display: inline-block;
+            border-radius: 3px;
+            padding: 0;
+            margin: 0;
         }
 
         .button {
@@ -158,7 +161,7 @@
 
         }
         ////////////////helpers/////////////
-        function ViewerURL(n) { return "viewer.html?n=" + n + "&" + RandomQuery() + query_pw; }
+        function ViewerURL(n) { return "viewer.html?n=" + filename + "&" + RandomQuery() + query_pw; }
         function PushState() {
             history.pushState({}, title, location.pathname + "?n=" + filename + query_tag_string + query_pw);
         }
