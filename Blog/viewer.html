@@ -425,9 +425,9 @@
             } else
                 e.parentNode.style.height = "auto";
         }
-        function ClickTag()
+        function ClickTag(a)
         {
-
+            window.parent.document.ReloadIndex( new Array(a.innerText));
         }
 
         //var current = window.location.href.match(/n=([0-9]*)/)[1];

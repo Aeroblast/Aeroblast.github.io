@@ -18,6 +18,7 @@
             display: inline-block;
             border: 1px solid brown;
             border-radius: 3px;
+            padding: 0;
         }
 
         #toc>div:hover {
@@ -48,6 +49,18 @@
         *[selected="false"] {
             display: none;
         }
+
+        .inline {
+            display: inline-block;
+        }
+
+        .button {
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #303030;
+        }
     </style>
 </head>
 
@@ -70,6 +83,9 @@
         var index = new Array();
         var loader = new XMLHttpRequest();
         var toc = document.getElementById('toc');
+        var title;
+        var filename;
+        var raw_index;
 
         var query_tag_string = "&tags=" + GetQueryString("tags");
         var query_tags = GetQueryString("tags");
@@ -89,10 +105,10 @@
         function LoadIndex() {
             if (loader.readyState == 4)
                 if (loader.status == 200) {
-                    let toc_index = loader.responseText.split("\n");
+                    raw_index = loader.responseText.split("\n");
                     var s = "";
-                    if (query_tags) { s += "Tag Search:<br>" + Tags2HTML(query_tags) + "<br>"; }
-                    toc_index.forEach(element => {
+                    if (query_tags) { s += "Tag Search<div class='inline button' onclick='ClearTags()'>❌</div>:<br>" + Tags2HTML(query_tags) + "<br>"; }
+                    raw_index.forEach(element => {
                         s += ReadIndex(element);
                     });
                     toc.innerHTML = s;
@@ -109,10 +125,21 @@
                     }
                 }
         }
-        function ReloadIndex() {
-
+        function ReloadIndex(tags_ = null) {
+            if(tags_)
+            {
+                query_tags=tags_;
+                query_tag_string="&tags="+tags_;
+                PushState();
+            }
+            var s = "";
+            if (query_tags) { s += "Tag Search<div class='inline button' onclick='ClearTags()'>❌</div>:<br>" + Tags2HTML(query_tags) + "<br>"; }
+            raw_index.forEach(element => {
+                s += ReadIndex(element);
+            });
+            toc.innerHTML = s;
         }
-
+        document.ReloadIndex = ReloadIndex;
         var list_state = 0;
         var list_shift_button = document.getElementById("ListShiftButton");
         function ListShift() {
@@ -123,9 +150,18 @@
             }
 
         }
+        function ClearTags() {
+            query_tags = null;
+            query_tag_string = "";
+            ReloadIndex();
+            PushState();
 
+        }
         ////////////////helpers/////////////
         function ViewerURL(n) { return "viewer.html?n=" + n + "&" + RandomQuery() + query_pw; }
+        function PushState() {
+            history.pushState({}, title, location.pathname + "?n=" + filename + query_tag_string + query_pw);
+        }
         function Tags2HTML(a) {
             let s = "";
             for (let i = 0; i < a.length; i++)s += "<div class='tag'>" + a[i] + "</div>";
@@ -134,16 +170,17 @@
         function Index2HTML(a) {
             let s = "";
             if (a.length > 1)
-                s += "Title:<span class='title'>" + a[1] + "</span><br>";
+                s += "Title:<span class='title'>" + a[1] + "</span><br>Tags　:";
             for (let i = 2; i < a.length; i++)if (a[i]) s += "<div class='tag' onclick='ClickTag(this)'>" + a[i] + "</div>";
             return s;
         }
         function LoadBlog(i) {
             let i_n = parseInt(i);
-            let name = index[i_n][0];
+            filename = index[i_n][0];
+            title = index[i_n][1] || index[i_n][0];
             mainwin.onload = function () { mainwin.contentDocument.getElementById("info").innerHTML = Index2HTML(index[i_n]); }
             mainwin.src = ViewerURL(name);
-            history.pushState({}, index[i_n][1], location.pathname + "?n=" + name + query_tag_string + query_pw);
+            PushState();
         }
         function IsInQueryTags(s) {
             if (s == "") return false;
