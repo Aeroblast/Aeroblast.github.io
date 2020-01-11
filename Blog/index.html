@@ -109,12 +109,7 @@
             if (loader.readyState == 4)
                 if (loader.status == 200) {
                     raw_index = loader.responseText.split("\n");
-                    var s = "";
-                    if (query_tags) { s += "Tag Search<div class='inline button' onclick='ClearTags()'>❌</div>:<br>" + Tags2HTML(query_tags) + "<br>"; }
-                    raw_index.forEach(element => {
-                        s += ReadIndex(element);
-                    });
-                    toc.innerHTML = s;
+                    _LoadIndex();
 
                     let n = GetQueryString("n");
                     let hit = false;
@@ -135,9 +130,12 @@
                 query_tag_string="&tags="+tags_;
                 PushState();
             }
+            _LoadIndex();
+        }
+        function _LoadIndex()
+        {
             var s = "";
             if (query_tags) { s += "Tag Search<div class='inline button' onclick='ClearTags()'>❌</div>:<br>" + Tags2HTML(query_tags) + "<br><div class='toc_item' style='height:0'></div>"; }
-            
             raw_index.forEach(element => {
                 s += ReadIndex(element);
             });
