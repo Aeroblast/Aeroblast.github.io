@@ -21,11 +21,11 @@
             padding: 0;
         }
 
-        #toc>div:hover {
+        .toc_item:hover {
             background: #303030;
         }
 
-        #toc>div {
+        .toc_item {
             border-bottom: #660000 solid 2px;
             white-space: nowrap;
             overflow-x: scroll;
@@ -173,7 +173,7 @@
         function Index2HTML(a) {
             let s = "";
             if (a.length > 1)
-                s += "Title:<span class='title'>" + a[1] + "</span><br>Tags　:";
+                s += "Title:<span class='title'>" + a[1] + "</span><br>Tags:";
             for (let i = 2; i < a.length; i++)if (a[i]) s += "<div class='tag' onclick='ClickTag(this)'>" + a[i] + "</div>";
             return s;
         }
@@ -205,11 +205,11 @@
             else { select = "noselect"; }
             select = " selected=\"" + select + "\"";
             if (es.length > 1 && es[1].length > 0) {
-                r = "<div onclick=\"LoadBlog('" + index.length + "')\"" + select + ">" + es[1] + "</div>"
+                r = "<div class='toc_item' onclick=\"LoadBlog('" + index.length + "')\"" + select + ">" + es[1] + "</div>"
             }
             else {
                 es.push(es[0]);
-                r = "<div onclick=\"LoadBlog('" + index.length + "')\"" + select + ">" + es[0] + "</div>"
+                r = "<div class='toc_item' onclick=\"LoadBlog('" + index.length + "')\"" + select + ">" + es[0] + "</div>"
             }
             index.push(es);
             return r;
