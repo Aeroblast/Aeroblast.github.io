@@ -91,7 +91,7 @@
                 if (loader.status == 200) {
                     let toc_index = loader.responseText.split("\n");
                     var s = "";
-                    if (query_tags) { s += "Tag Search:" + Tags2HTML(query_tags) + "<br>"; }
+                    if (query_tags) { s += "Tag Search:<br>" + Tags2HTML(query_tags) + "<br>"; }
                     toc_index.forEach(element => {
                         s += ReadIndex(element);
                     });
@@ -136,6 +136,7 @@
             if (a.length > 1)
                 s += "Title:<span class='title'>" + a[1] + "</span><br>";
             for (let i = 2; i < a.length; i++)if (a[i]) s += "<div class='tag' onclick='ClickTag(this)'>" + a[i] + "</div>";
+            return s;
         }
         function LoadBlog(i) {
             let i_n = parseInt(i);
