@@ -14,6 +14,12 @@
             color: antiquewhite;
         }
 
+        .tag {
+            display: inline-block;
+            border: 1px solid brown;
+            border-radius: 3px;
+        }
+
         #toc>div:hover {
             background: #303030;
         }
@@ -67,11 +73,11 @@
 
         var query_tag_string = "&tags=" + GetQueryString("tags");
         var query_tags = GetQueryString("tags");
-        if (query_tags == null || query_tags == "") query_tag_string = "";else query_tags=query_tags.split(",");
+        if (query_tags == null || query_tags == "") query_tag_string = ""; else query_tags = query_tags.split(",");
 
-        var query_pw=GetQueryString("pw");
-        if(query_pw)query_pw="&pw="+query_pw;
-        else query_pw="";
+        var query_pw = GetQueryString("pw");
+        if (query_pw) query_pw = "&pw=" + query_pw;
+        else query_pw = "";
 
         loader.open('GET', "index.txt?" + RandomQuery(), true);
         loader.onreadystatechange = LoadIndex;
@@ -85,25 +91,26 @@
                 if (loader.status == 200) {
                     let toc_index = loader.responseText.split("\n");
                     var s = "";
-                    if(query_tags){s+="Tag Search:"+query_tags+"<br>";}
+                    if (query_tags) { s += "Tag Search:" + Tags2HTML(query_tags) + "<br>"; }
                     toc_index.forEach(element => {
                         s += ReadIndex(element);
                     });
                     toc.innerHTML = s;
-                    LoadDoc();
+
+                    let n = GetQueryString("n");
+                    let hit = false;
+                    if (n && n.length > 1) {
+                        for (let i = 0; i < index.length; i++) {
+                            if (index[i][0] == n) { LoadBlog(i); hit = true; break; }
+                        }
+                    }
+                    if (!hit) {
+                        mainwin.src = "viewer.html?n=welcome";
+                    }
                 }
         }
         function ReloadIndex() {
 
-        }
-        function LoadDoc() {
-            let n = GetQueryString("n");
-            if (n != null)
-                if (n.length > 1) {
-                    mainwin.src = ViewerURL(n);
-                    return;
-                }
-            mainwin.src = "viewer.html?n=welcome";
         }
 
         var list_state = 0;
@@ -118,13 +125,24 @@
         }
 
         ////////////////helpers/////////////
-        function ViewerURL(n){return "viewer.html?n=" + n + "&" + RandomQuery()+query_pw;}
+        function ViewerURL(n) { return "viewer.html?n=" + n + "&" + RandomQuery() + query_pw; }
+        function Tags2HTML(a) {
+            let s = "";
+            for (let i = 0; i < a.length; i++)s += "<div class='tag'>" + a[i] + "</div>";
+            return s;
+        }
+        function Index2HTML(a) {
+            let s = "";
+            if (a.length > 1)
+                s += "Title:<span class='title'>" + a[1] + "</span><br>";
+            for (let i = 2; i < a.length; i++)if (a[i]) s += "<div class='tag' onclick='ClickTag(this)'>" + a[i] + "</div>";
+        }
         function LoadBlog(i) {
             let i_n = parseInt(i);
             let name = index[i_n][0];
-            mainwin.onload = function () { mainwin.contentDocument.getElementById("info").innerHTML = index[i_n]; }
+            mainwin.onload = function () { mainwin.contentDocument.getElementById("info").innerHTML = Index2HTML(index[i_n]); }
             mainwin.src = ViewerURL(name);
-            history.pushState({}, index[i_n][1], location.pathname + "?n=" + name + query_tag_string+query_pw);
+            history.pushState({}, index[i_n][1], location.pathname + "?n=" + name + query_tag_string + query_pw);
         }
         function IsInQueryTags(s) {
             if (s == "") return false;
