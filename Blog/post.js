@@ -38,7 +38,7 @@ function SetTimeString() {
     let d = new Date();
     let y = "" + d.getFullYear();
     let dd = d.getDate(); if (dd < 10) dd = "0" + dd;
-    let mm = d.getMonth(); m++;if (mm < 10) mm = "0" + mm;
+    let mm = d.getMonth(); mm++;if (mm < 10) mm = "0" + mm;
     let hh = d.getHours(); if (hh < 10) hh = "0" + hh;
     let mi = d.getMinutes(); if (mi < 10) mi = "0" + mi;
     let ss = d.getSeconds(); if (ss < 10) ss = "0" + ss;
