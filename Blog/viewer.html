@@ -180,6 +180,11 @@
         #pw_input {
             font-size: 16px;
         }
+        .quote
+        {
+            margin-left: 1em;
+            border-left:3px solid dimgray;
+        }
     </style>
 </head>
 
@@ -283,12 +288,18 @@
                 /\[emphasis\](.*?)\[\/emphasis\]/,
                 /\[s\](.*?)\[\/s\]/,
                 /\[time\](.*?)\[\/time\]/,
+                /\[h1\](.*?)\[\/h1\]/,
+                /\[h2\](.*?)\[\/h2\]/,
+                /\[h3\](.*?)\[\/h3\]/,
                 /\[h4\](.*?)\[\/h4\]/,
+                /\[h5\](.*?)\[\/h5\]/,
                 /\[size=(.*?)\](.*?)\[\/size\]/,
                 /\[link=(.*?)\](.*?)\[\/link\]/,
                 /\[ASIN\](.*?)\[\/ASIN\]/,
                 /\[spoiler\]/,
-                /\[\/spoiler\]/
+                /\[\/spoiler\]/,
+                /\[quote\]/,
+                /\[\/quote\]/
             );
             var rept = new Array(
                 "<p class='aligned' style='text-align:$1'>$2</p>",
@@ -304,11 +315,17 @@
                 "<span class=\"emph\">$1</span>",
                 "<s>$1</s>",
                 "<p class='time'>$1</p>",
+                "<h1>$1</h1>",
+                "<h2>$1</h2>",
+                "<h3>$1</h3>",
                 "<h4>$1</h4>",
+                "<h5>$1</h5>",
                 "<span style=\"font-size:$1em\">$2</span>",
                 "<a href=\"$1\"target=\"_blank\">$2</a>",
                 "ASIN:<a href=\"https://www.google.com/search?q=$1\" target=\"_blank\">$1</a>",
                 "<div class='spoiler'><div onclick='SpoilerShift(this)'>Spoiler</div>",
+                "</div>",
+                "<div class='quote'>",
                 "</div>"
 
             );
