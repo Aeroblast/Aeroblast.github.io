@@ -60,7 +60,7 @@
             text-indent: 0;
         }
 
-        .illu {
+        .aimg {
             max-height: 80vh;
             max-width: 100%;
             text-align: center;
@@ -182,8 +182,10 @@
         }
         .quote
         {
-            padding-left: 1em;
+            padding-left: 0.5em;
             border-left:3px solid dimgray;
+            background: rgba(255, 255, 255, 0.1);
+            color:rgb(255, 228, 192);
         }
     </style>
 </head>
@@ -279,6 +281,7 @@
                 /\[note\]/,
                 /\[note=(.*?)\]/,
                 /\[img\](.*?)\[\/img\]/,
+                /\[img=(.*?),(.*?)\](.*?)\[\/img\]/,
                 /\[b\](.*?)\[\/b\]/,
                 /\[title\](.*?)\[\/title\]/,
                 /\[ruby=(.*?)\](.*?)\[\/ruby\]/,
@@ -305,7 +308,8 @@
                 "<p class='aligned' style='text-align:$1'>$2</p>",
                 "",
                 "",
-                "<div class='illu'><img class='illu' src='Images/$1'></div>",
+                "<img class='aimg' src='Images/$1'>",
+                "<img class='aimg' width='$1' height='$2' src='Images/$3'>",
                 "<b>$1</b>",
                 "<p class='title0'>$1</p>",
                 "<ruby>$2<rt>$1</rt></ruby>",
