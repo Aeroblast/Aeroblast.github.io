@@ -224,7 +224,7 @@
                         document.getElementById("pw_zone").style.display = "block";
                         var pw = document.getElementById("pw_input");
                         pw.onkeydown = function (e) {
-                            if (e.key == 'Enter') { TryLoadEncrpyted(pw.value); }
+                            if (e.key == 'Enter') {pw.blur(); TryLoadEncrpyted(pw.value); }
                         }
                         let q_pw = GetQueryString("pw");
                         if (q_pw) { TryLoadEncrpyted(q_pw); }
