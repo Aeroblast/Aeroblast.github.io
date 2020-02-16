@@ -101,7 +101,12 @@
             border-radius: 3px;
             cursor: pointer;
         }
-
+        .mask{
+            color: transparent;
+        }
+        .mask:hover{
+            color: inherit;
+        }
         #main .title0 {
             font-size: 1.5em;
             text-indent: 0;
@@ -302,7 +307,8 @@
                 /\[spoiler\]/,
                 /\[\/spoiler\]/,
                 /\[quote\]/,
-                /\[\/quote\]/
+                /\[\/quote\]/,
+                /\[mask\](.*?)\[\/mask\]/
             );
             var rept = new Array(
                 "<p class='aligned' style='text-align:$1'>$2</p>",
@@ -330,7 +336,8 @@
                 "<div class='spoiler'><div onclick='SpoilerShift(this)'>Spoiler</div>",
                 "</div>",
                 "<div class='quote'>",
-                "</div>"
+                "</div>",
+                "<span class=\"mask\" title=\"你知道的太多了\">$1</span>"
 
             );
             var r = c;
