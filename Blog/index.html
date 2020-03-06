@@ -92,6 +92,7 @@
         var toc = document.getElementById('toc');
         var title;
         var filename;
+        var query_n = GetQueryString("n");
         var raw_index;
 
         var query_tag_string = "&tags=" + GetQueryString("tags");
@@ -115,11 +116,10 @@
                     raw_index = loader.responseText.split("\n");
                     _LoadIndex();
 
-                    let n = GetQueryString("n");
                     let hit = false;
-                    if (n && n.length > 1) {
+                    if (query_n && query_n.length > 1) {
                         for (let i = 0; i < index.length; i++) {
-                            if (index[i][0] == n) { LoadBlog(i); hit = true; break; }
+                            if (index[i][0] == query_n) { LoadBlog(i); hit = true; break; }
                         }
                     }
                     if (!hit) {
