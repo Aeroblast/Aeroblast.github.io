@@ -233,11 +233,10 @@
                     closeindex_css = classes[x];
                 }
             }
-
-            function SetIndexAnimeCSS(px) {
-                openindex_css.cssText = "from{transform:none}to{transform:translate(" + px + ",0)}";
-                clossindex_css.cssText = "to{transform:none}from{transform:translate(" + px + ",0)}";
-            }
+        }
+        function SetIndexAnimeCSS(px) {
+            openindex_css.cssText = "from{transform:none}to{transform:translate(" + px + ",0)}";
+            clossindex_css.cssText = "to{transform:none}from{transform:translate(" + px + ",0)}";
         }
         function LoadBlog(i) {
             if (list_state == 1) ListShift();
