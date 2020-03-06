@@ -236,10 +236,10 @@
         }
         function SetIndexAnimeCSS(px) {
             openindex_css.appendRule("from{transform:none}");
-            openindex_css.appendRule("to{transform:translate(200px,0)}");
+            openindex_css.appendRule("to{transform:translate(" + px + "px,0)}");
             closeindex_css.appendRule("to{transform:none}");
             closeindex_css.appendRule("from{transform:translate(" + px + "px,0)}");
-         }
+        }
         function LoadBlog(i) {
             if (list_state == 1) ListShift();
             let i_n = parseInt(i);
