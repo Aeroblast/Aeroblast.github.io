@@ -32,6 +32,7 @@
             padding-top: 0.2em;
             padding-bottom: 0.2em;
             background: #101010;
+            cursor: pointer;
         }
 
         .toc_item_selected {
@@ -211,10 +212,10 @@
                 classstr += " toc_item_selected";
             }
             if (es.length > 1 && es[1].length > 0) {
-                r = "<div class='" + classstr + "' onclick=\"LoadBlog('" + index.length + "')\"" + select + ">" + es[1] + "</div>"
+                r = "<div class='" + classstr + "' onclick=\"LoadBlog('" + index.length + "');ReloadIndex();\"" + select + ">" + es[1] + "</div>"
             }
             else {
-                r = "<div class='" + classstr + "' onclick=\"LoadBlog('" + index.length + "')\"" + select + ">" + es[0] + "</div>"
+                r = "<div class='" + classstr + "' onclick=\"LoadBlog('" + index.length + "');ReloadIndex();\"" + select + ">" + es[0] + "</div>"
             }
             index.push(es);
             return r;
