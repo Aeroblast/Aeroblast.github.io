@@ -31,6 +31,7 @@
             overflow-x: scroll;
             padding-top: 0.2em;
             padding-bottom: 0.2em;
+            padding-right: 0.3em;
             background: #101010;
             cursor: pointer;
         }
@@ -69,25 +70,57 @@
         .button:hover {
             background: #303030;
         }
+
+        @keyframes OpenIndex {}
+
+        @keyframes CloseIndex {}
     </style>
 </head>
 
 <body>
-    <div style="-webkit-overflow-scrolling:touch; overflow-x:hidden;width:75%;position:fixed;left:20%;height:98%;">
-        <iframe src="" id="mainwin" style="width: 100%;height: 100%;border: 0 none;overflow-x:hidden;"></iframe>
+    <div id="mainwin_container" style="
+        -webkit-overflow-scrolling:touch; 
+        overflow-x:hidden;
+        width:90%;
+        position:fixed;
+        top:0;
+        margin: auto;
+        height:98%;
+        animation-fill-mode : forwards;
+        ">
+        <iframe src="" id="mainwin" style="
+        width: 100%;
+        height: 100%;
+        border: 0 none;
+        overflow-x:hidden;
+        "></iframe>
     </div>
-    <div id="toc"
-        style="position:fixed;width: 18%;left: 2%;height:100%;border-right: 1px solid brown;background:rgba(0,0,0,0.5)">
+    <div id="toc" style="
+        position:fixed;
+        width: auto;
+        right:100%;
+        height:100%;
+        border-right: 1px solid brown;
+        background:rgba(0,0,0,0.5);
+        animation-fill-mode : forwards;
+        ">
         这里应该是目录……
     </div>
-    <div style="position:fixed;width: 18%;left: 2%;height:2em;bottom: 0;border-top: 1px solid brown;border-right: 1px solid brown;background: #101010;"
-        onclick="ListShift()">
-        <p id="ListShiftButtonText" style="text-align: center;cursor: pointer;font-weight: bold;margin: 0;">展开</p>
+    <div id="list_shift_button" class="button" style="
+        position:fixed;
+        width: 10%;
+        left: 0;
+        height:100%;
+        bottom: 0;
+        background: transparent;
+        animation-fill-mode : forwards;" onclick="ListShift()">
     </div>
     <script src="util.js"></script>
     <script>
 
         var mainwin = document.getElementById("mainwin");
+        var mainwin_container = document.getElementById("mainwin_container");
+        var list_shift_button = document.getElementById("list_shift_button");
         var index = new Array();
         var loader = new XMLHttpRequest();
         var toc = document.getElementById('toc');
@@ -103,6 +136,8 @@
         var query_pw = GetQueryString("pw");
         if (query_pw) query_pw = "&pw=" + query_pw;
         else query_pw = "";
+
+        PrepareIndexAnime();
 
         loader.open('GET', "index.txt?" + RandomQuery(), true);
         loader.onreadystatechange = LoadIndex;
@@ -143,15 +178,22 @@
                 s += ReadIndex(element);
             });
             toc.innerHTML = s + "<div style='height:5%'></div>";
+            let w = toc.offsetWidth;
+            SetIndexAnimeCSS(w);
         }
         document.ReloadIndex = ReloadIndex;
         var list_state = 0;
-        var list_shift_button = document.getElementById("ListShiftButtonText");
         function ListShift() {
             if (list_state == 0) {
-                list_state = 1; toc.style.width = "90%"; list_shift_button.innerText = "缩小";
+                list_state = 1;
+                toc.style.animation = "OpenList 0.5s";
+                mainwin_container.style.animation = "OpenList 0.5s";
+                list_shift_button.style.animation = "OpenList 0.5s";
             } else if (list_state == 1) {
-                list_state = 0; toc.style.width = "18%"; list_shift_button.innerText = "展开";
+                list_state = 0;
+                toc.style.animation = "CloseList 0.5s";
+                mainwin_container.style.animation = "CloseList 0.5s";
+                list_shift_button.style.animation = "CloseList 0.5s";
             }
 
         }
@@ -178,6 +220,24 @@
                 s += "Title:<span class='title'>" + a[1] + "</span><br>Tags:";
             for (let i = 2; i < a.length; i++)if (a[i]) s += "<div class='tag' onclick='ClickTag(this)'>" + a[i] + "</div>";
             return s;
+        }
+        var openindex_css;
+        var closeindex_css;
+        function PrepareIndexAnime() {
+            let classes = document.styleSheets[0].rules || document.styleSheets[0].cssRules;
+            for (let x = 0; x < classes.length; x++) {
+                if (classes[x].name == "OpenIndex") {
+                    openindex_css = classes[x];
+                }
+                if (classes[x].name == "CloseIndex") {
+                    closeindex_css = classes[x];
+                }
+            }
+
+            function SetIndexAnimeCSS(px) {
+                openindex_css.cssText = "from{transform:none}to{transform:translate(" + px + ",0)}";
+                clossindex_css.cssText = "to{transform:none}from{transform:translate(" + px + ",0)}";
+            }
         }
         function LoadBlog(i) {
             if (list_state == 1) ListShift();
