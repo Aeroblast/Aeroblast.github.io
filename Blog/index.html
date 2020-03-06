@@ -186,14 +186,14 @@
         function ListShift() {
             if (list_state == 0) {
                 list_state = 1;
-                toc.style.animation = "OpenList 0.5s";
-                mainwin_container.style.animation = "OpenList 0.5s";
-                list_shift_button.style.animation = "OpenList 0.5s";
+                toc.style.animation = "OpenIndex 0.5s";
+                mainwin_container.style.animation = "OpenIndex 0.5s";
+                list_shift_button.style.animation = "OpenIndex 0.5s";
             } else if (list_state == 1) {
                 list_state = 0;
-                toc.style.animation = "CloseList 0.5s";
-                mainwin_container.style.animation = "CloseList 0.5s";
-                list_shift_button.style.animation = "CloseList 0.5s";
+                toc.style.animation = "CloseIndex 0.5s";
+                mainwin_container.style.animation = "CloseIndex 0.5s";
+                list_shift_button.style.animation = "CloseIndex 0.5s";
             }
 
         }
