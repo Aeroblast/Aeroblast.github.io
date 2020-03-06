@@ -216,9 +216,6 @@
         function PushState() {
             history.pushState({}, title, location.pathname + "?n=" + filename + query_tag_string + query_pw);
             query_n = GetQueryString("n");
-            var query_pw = GetQueryString("pw");
-            if (query_pw) query_pw = "&pw=" + query_pw;
-            else query_pw = "";
         }
         function Tags2HTML(a) {
             let s = "";
