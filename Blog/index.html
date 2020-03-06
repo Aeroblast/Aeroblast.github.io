@@ -13,7 +13,7 @@
             background: #101010;
             color: antiquewhite;
             text-align: center;
-            overflow-x:hidden;
+            overflow-x: hidden;
         }
 
         .tag {
@@ -71,7 +71,7 @@
             cursor: pointer;
         }
 
-        #list_shift_button:hover{
+        #list_shift_button:hover {
             background: #303030;
         }
 
@@ -169,6 +169,7 @@
                 query_tag_string = "&tags=" + tags_;
                 PushState();
             }
+            if (list_state == 0) ListShift();
             _LoadIndex();
         }
         function _LoadIndex() {
@@ -187,17 +188,17 @@
             if (list_state == 0) {
                 list_state = 1;
                 toc.style.animation = "OpenIndex 0.3s";
-                toc.style.animationFillMode="forwards";
+                toc.style.animationFillMode = "forwards";
                 mainwin_container.style.animation = "OpenIndex 0.3s";
-                mainwin_container.style.animationFillMode="forwards";
+                mainwin_container.style.animationFillMode = "forwards";
                 //list_shift_button.style.animation = "OpenIndex 0.3s";
                 //list_shift_button.style.animationFillMode="forwards";
             } else if (list_state == 1) {
                 list_state = 0;
                 toc.style.animation = "CloseIndex 0.3s";
-                toc.style.animationFillMode="forwards";
+                toc.style.animationFillMode = "forwards";
                 mainwin_container.style.animation = "CloseIndex 0.3s";
-                mainwin_container.style.animationFillMode="forwards";
+                mainwin_container.style.animationFillMode = "forwards";
                 //list_shift_button.style.animation = "CloseIndex 0.3s";
                 //list_shift_button.style.animationFillMode="forwards";
             }
@@ -279,10 +280,10 @@
                 classstr += " toc_item_selected";
             }
             if (es.length > 1 && es[1].length > 0) {
-                r = "<div class='" + classstr + "' onclick=\"LoadBlog('" + index.length + "');ReloadIndex();\"" + select + ">" + es[1] + "</div>"
+                r = "<div class='" + classstr + "' onclick=\"LoadBlog('" + index.length + "');_LoadIndex();\"" + select + ">" + es[1] + "</div>"
             }
             else {
-                r = "<div class='" + classstr + "' onclick=\"LoadBlog('" + index.length + "');ReloadIndex();\"" + select + ">" + es[0] + "</div>"
+                r = "<div class='" + classstr + "' onclick=\"LoadBlog('" + index.length + "');_LoadIndex();\"" + select + ">" + es[0] + "</div>"
             }
             index.push(es);
             return r;
