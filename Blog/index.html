@@ -223,7 +223,7 @@
             let s = "";
             if (a.length > 1)
                 s += "Title:<span class='title'>" + a[1] + "</span><br>Tags:";
-            for (let i = 2; i < a.length; i++)if (a[i]) s += "<div class='tag' onclick='ClickTag(this);return false;'>" + a[i] + "</div>";
+            for (let i = 2; i < a.length; i++)if (a[i]) s += "<div class='tag' onclick='ClickTag(this);e.stopPropagation();'>" + a[i] + "</div>";
             return s;
         }
         var openindex_css;
