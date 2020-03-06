@@ -71,7 +71,7 @@
             cursor: pointer;
         }
 
-        .button:hover {
+        .button:hover,#list_shift_button:hover{
             background: #303030;
         }
 
@@ -186,19 +186,19 @@
         function ListShift() {
             if (list_state == 0) {
                 list_state = 1;
-                toc.style.animation = "OpenIndex 0.5s";
+                toc.style.animation = "OpenIndex 0.3s";
                 toc.style.animationFillMode="forwards";
-                mainwin_container.style.animation = "OpenIndex 0.5s";
+                mainwin_container.style.animation = "OpenIndex 0.3s";
                 mainwin_container.style.animationFillMode="forwards";
-                //list_shift_button.style.animation = "OpenIndex 0.5s";
+                //list_shift_button.style.animation = "OpenIndex 0.3s";
                 //list_shift_button.style.animationFillMode="forwards";
             } else if (list_state == 1) {
                 list_state = 0;
-                toc.style.animation = "CloseIndex 0.5s";
+                toc.style.animation = "CloseIndex 0.3s";
                 toc.style.animationFillMode="forwards";
-                mainwin_container.style.animation = "CloseIndex 0.5s";
+                mainwin_container.style.animation = "CloseIndex 0.3s";
                 mainwin_container.style.animationFillMode="forwards";
-                //list_shift_button.style.animation = "CloseIndex 0.5s";
+                //list_shift_button.style.animation = "CloseIndex 0.3s";
                 //list_shift_button.style.animationFillMode="forwards";
             }
 
