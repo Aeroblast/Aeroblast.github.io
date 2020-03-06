@@ -35,7 +35,7 @@
             max-width: 96%;
             margin: auto;
             margin-top: 0;
-            margin-bottom: 0;
+            margin-bottom: 0.2em;
             padding: 0;
         }
 
@@ -254,7 +254,7 @@
 
                 }
                 else if (loader.status == 404) {
-                    log.innerHTML += "【404】似乎不存在这个文档呢……:"+n;
+                    log.innerHTML += "【404】似乎不存在这个文档呢……:" + n;
                 }
         }
         function RenderContent() {
@@ -474,7 +474,9 @@
         function ClickTag(a) {
             window.parent.document.ReloadIndex(new Array(a.innerText));
         }
-
+        document.body.addEventListener("click", function () {
+            window.parent.document.CloseIndex();
+        });
         //var current = window.location.href.match(/n=([0-9]*)/)[1];
         //var last = window.location.href.replace(/n=([0-9])*/, "n=" + (parseInt(current) - 1));
         //var next = window.location.href.replace(/n=([0-9])*/, "n=" + (parseInt(current) + 1));
