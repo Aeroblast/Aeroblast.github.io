@@ -34,6 +34,10 @@
             background: #101010;
         }
 
+        .toc_item_selected {
+            color: white;
+        }
+
         #toc>div::-webkit-scrollbar {
             display: none;
         }
@@ -194,6 +198,7 @@
             let es = element.split(',');
             let r = "";
             let select = "false";
+            let classstr = "toc_item";
             if (query_tags)
                 for (let i = 2; i < es.length; i++) {//Tags check
                     if (IsInQueryTags(es[i])) {
@@ -202,11 +207,14 @@
                 }
             else { select = "noselect"; }
             select = " selected=\"" + select + "\"";
+            if (es[0] == filename) {
+                classstr += " toc_item_selected";
+            }
             if (es.length > 1 && es[1].length > 0) {
-                r = "<div class='toc_item' onclick=\"LoadBlog('" + index.length + "')\"" + select + ">" + es[1] + "</div>"
+                r = "<div class='" + classstr + "' onclick=\"LoadBlog('" + index.length + "')\"" + select + ">" + es[1] + "</div>"
             }
             else {
-                r = "<div class='toc_item' onclick=\"LoadBlog('" + index.length + "')\"" + select + ">" + es[0] + "</div>"
+                r = "<div class='" + classstr + "' onclick=\"LoadBlog('" + index.length + "')\"" + select + ">" + es[0] + "</div>"
             }
             index.push(es);
             return r;
