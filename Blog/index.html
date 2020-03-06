@@ -13,6 +13,7 @@
             background: #101010;
             color: antiquewhite;
             text-align: center;
+            overflow-x:hidden;
         }
 
         .tag {
@@ -32,7 +33,8 @@
             overflow-x: scroll;
             padding-top: 0.2em;
             padding-bottom: 0.2em;
-            padding-right: 0.3em;
+            padding-right: 3em;
+            padding-left: 0.5em;
             background: #101010;
             cursor: pointer;
             text-align: left;
@@ -98,6 +100,7 @@
         position:fixed;
         width: auto;
         right:100%;
+        top: 0;
         height:100%;
         border-right: 1px solid brown;
         background:rgba(0,0,0,0.5);
@@ -106,7 +109,7 @@
     </div>
     <div id="list_shift_button" class="button" style="
         position:fixed;
-        width: 10%;
+        width: 3em;
         left: 0;
         height:100%;
         bottom: 0;
@@ -187,16 +190,16 @@
                 toc.style.animationFillMode="forwards";
                 mainwin_container.style.animation = "OpenIndex 0.5s";
                 mainwin_container.style.animationFillMode="forwards";
-                list_shift_button.style.animation = "OpenIndex 0.5s";
-                list_shift_button.style.animationFillMode="forwards";
+                //list_shift_button.style.animation = "OpenIndex 0.5s";
+                //list_shift_button.style.animationFillMode="forwards";
             } else if (list_state == 1) {
                 list_state = 0;
                 toc.style.animation = "CloseIndex 0.5s";
                 toc.style.animationFillMode="forwards";
                 mainwin_container.style.animation = "CloseIndex 0.5s";
                 mainwin_container.style.animationFillMode="forwards";
-                list_shift_button.style.animation = "CloseIndex 0.5s";
-                list_shift_button.style.animationFillMode="forwards";
+                //list_shift_button.style.animation = "CloseIndex 0.5s";
+                //list_shift_button.style.animationFillMode="forwards";
             }
 
         }
