@@ -1,0 +1,30 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <META HTTP-EQUIV="pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+    <META HTTP-EQUIV="expires" CONTENT="0">
+    <title>Blog</title>
+    <style>
+        body{
+            background:#101010;
+            color: antiquewhite;
+            font-size: 3em;
+        }
+    </style>
+</head>
+
+<body>
+<script>
+let loader = new XMLHttpRequest();
+    loader.open('GET',"https://baidu.com", true);
+    loader.onload = function(){console.log(loader.status);};
+    loader.send(null);
+</script>
+
+</body>
+
+</html>
