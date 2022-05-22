@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <link rel="stylesheet" href="lib/codemirror.css">
+  <link rel="stylesheet" href="theme/3024-day.css">
+  <link rel="stylesheet" href="theme/darcula.css">
+  <title>AeroNovel-Lite</title>
+  <style>
+    .tab {
+      display: inline-block;
+      width: 30vw;
+      vertical-align: text-top;
+      min-height: 100vh;
+    }
+
+    #output_render {
+      border: black solid 1px;
+      word-wrap: break-word;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 90vh;
+    }
+
+    .CodeMirror {
+      height: 90vh;
+    }
+
+    .CodeMirror-wrap pre {
+      word-break: break-word;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    ✅修改自 AeroNovel Lite。<br>
+    👉<a target="_blank" href="https://github.com/Aeroblast/AeroNovel">项目地址</a>
+    <br><br>
+    <input type="checkbox" onchange="ChangeOption()" id="input_indent">缩进
+    <input type="checkbox" onchange="ChangeOption()" checked id="input_indent_adjust">缩进调整
+    <input type="checkbox" onchange="ChangeOption()" checked id="input_margin">消除段间距
+    <script>
+      var addIndent;
+      var indentAdjust;
+      var addMargin;
+      const input_indent = document.getElementById("input_indent");
+      const input_indent_adjust = document.getElementById("input_indent_adjust");
+      const input_input_margin = document.getElementById("input_margin");
+      function ChangeOption() {
+        addIndent = input_indent.checked;
+        indentAdjust = input_indent_adjust.checked;
+        addMargin = input_input_margin.checked;
+        Update()
+      }
+    </script>
+  </header>
+  <div id="container_src" class="tab">
+
+    Select a theme:
+    <select onchange="selectTheme()" id="theme_select">
+      <option>default</option>
+      <option>3024-day</option>
+      <option selected>darcula</option>
+    </select>
+    <textarea id="src">
+【提示】
+【警告】
+【错误】
+【严重错误】
+　　原文：
+您的译文：
+　　解说：
+　　试译：
+
+以上是模板
+测试：
+【警告】xxxxx
+[count]
+
+【提示】yy
+[count]
+
+测试：wryyyyyyyyyyyyyyyyyyy啊啊啊啊啊
+[color=red]测试[/color]：xxxxx wryyyyyyyyyyyyyyyyyyy啊啊啊啊啊    
+
+</textarea>
+  </div>
+  <div class="tab">输出HTML：<textarea id="output_html"></textarea></div>
+  <div class="tab">预览：<div id="output_render"></div>
+  </div>
+  <script src="lib/codemirror.js"></script>
+  <script src="mode/simple.js"></script>
+  <script>
+    const countCategory = ["提示", "警告", "错误", "严重错误"];
+    //const countCategory = ["Info", "Warn", "Error", "Fatal"];
+    const countColors = ["gray", "#cdcd4a", "red", "brown"];
+
+    // https://codemirror.net/demo/simplemode.html
+    CodeMirror.defineSimpleMode("simplemode", {
+      // The start state contains the rules that are initially used
+      start: [
+        {
+          regex: /(\[b\].*?\[\/b\])/,
+          token: "keyword"
+        },
+        {
+          regex: /(\[s\].*?\[\/s\])/,
+          token: "keyword"
+        },
+        {
+          regex: /\[color=(.*?)\](.*?)\[\/color\]/,
+          token: "keyword"
+        },
+        {
+          regex: /(\[ruby=.*?\].*?\[\/ruby\])/,
+          token: "keyword"
+        },
+        {
+          regex: /\[note\]/,
+          token: "keyword"
+        },
+        {
+          regex: /\[note=(.*?)\]/,
+          token: "keyword"
+        },
+        {
+          regex: /^#(right|left|center|illu|title):(.*)/,
+          token: "keyword"
+        },
+        { regex: /##.*/, token: "comment" },
+      ],
+      comment: [
+      ],
+      meta: {
+        dontIndentStates: ["comment"],
+        lineComment: "##"
+      }
+    });
+    const src_textarea = document.getElementById("src")
+    var editor = CodeMirror.fromTextArea(src_textarea, {
+      lineNumbers: true,
+      lineWrapping: true,
+      mode: "simplemode"
+    });
+    editor.on("change", function (cm, change) {
+      Update();
+    })
+    const theme_select = document.getElementById("theme_select");
+    function selectTheme() {
+      let theme = theme_select.options[theme_select.selectedIndex].textContent;
+      editor.setOption("theme", theme);
+    }
+    selectTheme()
+
+    //doc.replaceSelection(string)
+    //doc.getSelection()
+    //doc.getValue() 
+    const output_html = document.getElementById("output_html");
+    const output_render = document.getElementById("output_render");
+    function Update() {
+      let html = RenderAtxt(editor.getValue());
+      output_html.value = html;
+      output_render.innerHTML = html;
+    }
+    ChangeOption();//will call Update
+
+    function RenderAtxt(atxt) {
+
+      let counts = countCategory.map(x => 0);
+
+      const reg_notecontent = /\[note=(.*?)\]/;
+      const reg = [
+        [/\[color=(.*?)\](.*?)\[\/color\]/, "<span style=\"color:$1\">$2</span>"],
+        [/\[img\](.*?)\[\/img\]/, "<img src='$1'>"],
+        [/\[img=(.*?),(.*?)\](.*?)\[\/img\]/, "<img style='width:$1;height:$2' src='$3'>"],
+        [/\[b\](.*?)\[\/b\]/, "<b>$1</b>"],
+        [/\[ruby=(.*?)\](.*?)\[\/ruby\]/, "<ruby>$2<rt>$1</rt></ruby>"],
+        [/\[s\](.*?)\[\/s\]/, "<s>$1</s>"],
+        [/\[size=(.*?)\](.*?)\[\/size\]/, "<span style=\"font-size:$1em\">$2</span>"],
+        [/\[url=(.*?)\](.*?)\[\/url\]/, "<a href=\"$1\">$2</a>"],
+        [/^#left:(.*)/, "<p style='text-align:left;margin:0;'>$1</p>"],
+        [/^#center:(.*)/, "<p style='text-align:center;margin:0;'>$1</p>"],
+        [/^#right:(.*)/, "<p style='text-align:right;margin:0;'>$1</p>"],
+        [/^#title:(.*)/, "<p style='font-size:1.4em;font-weight:bold;text-align:center;margin:0.2em;'>$1</p>"],
+        [/^#h([1-6]):(.*)/, "<h$1>$2</h$1>"],
+        [/\/\/\/.*/, ""],
+        [/^#illu:(.*)/, "<p class='aligned' style='text-align:center'><img src=\"$1\" style='max-width:100%;max-height:90vh'></p>"],
+        [/^#class:(.*)/, "<div class=\"$1\">"],
+        [/^#\/class/, "</div>"],
+        //[reg_noteref, "<span class=\"ae_noteref\" style=\"vertical-align:super;font-size:x-small;\">[注]</span>"],
+        [reg_notecontent, "<span class=\"ae_notecontent\" style=\"display:block;text-indent:0;max-width:90vw;width:15em;margin-right:0%;margin-left:auto;\">$1</span>"],
+        [/((?<!<span style=\"word-wrap:break-word;word-break:break-all;\">)(?<!…)[…]{3,99})/, "<span style=\"word-wrap:break-word;word-break:break-all;\">$1</span>"],
+        [/((?<!<span style=\"word-wrap:break-word;word-break:break-all;\">)(?<!—)[—]{3,99})/, "<span style=\"word-wrap:break-word;word-break:break-all;\">$1</span>"],
+        [/`(.*?)`/, "<span style='text-decoration:underline;'>$1</span>"],
+      ];
+      const lines = atxt.split('\n');
+      let html = "";
+      let notecontents = [];
+      for (const line of lines) {
+        if (line.startsWith("##")) continue;
+        let renderedLine = line;
+        let matched = true;
+        while (matched) {
+          matched = false;
+          for (let i = 0; i < reg.length; i++) {
+            let match = reg[i][0].exec(renderedLine);
+            if (match != null) {
+              let rep = reg[i][1];
+              switch (reg[i][0]) {
+                case reg_notecontent:
+                  notecontents.push(match[1]);
+                  renderedLine = renderedLine.replace(reg[i][0], rep);
+                  break;
+                default:
+                  renderedLine = renderedLine.replace(reg[i][0], rep);
+                  break;
+              }
+              matched = true;
+              break;
+            }
+          }
+        }
+        if (renderedLine == "") renderedLine = "<br>";
+        if (
+          //if should add <p></p>
+          !((str) => {
+            const reg_startswith = [
+              /^<div/,
+              /^<\/div/,
+              /^<p /,
+              /^<h[1-6]/,
+            ];
+            for (let i = 0; i < reg_startswith.length; i++) {
+              if (str.match(reg_startswith[i])) {
+                return true;
+              }
+            }
+            return false;
+          })(renderedLine)
+        ) {
+          //should add <p></p>
+          let pStyle = "";
+          let colonHandled = false;
+          let pureText = renderedLine.replace(/<.*?>/g, "");
+          {
+            let colonIndex = pureText.indexOf("：");
+            if (colonIndex > 0 && colonIndex < 5) {
+              colonHandled = true;
+              pStyle += `margin-left: ${colonIndex + 1}em; text-indent: -${colonIndex + 1}em;`;
+            }
+          }
+          {
+            let match = pureText.match(/^【(.{1,7})】/);
+            if (match) {
+              let t = match[1];
+              let i = countCategory.findIndex(x => x == t);
+              if (i >= 0) {
+                counts[i]++;
+                pStyle += `color:${countColors[i]};font-weight:bold;`;
+              }
+            }
+          }
+          if (addMargin) pStyle = "margin:0;" + pStyle; //加到前面，优先级低于冒号处理。 
+          if (addIndent)
+            if (
+              //if should drawout
+              ((c) => {
+                const list = ["「", "『", "（"];
+                for (const k of list) {
+                  if (c[0] == k) return true;
+                }
+                return false;
+              })(renderedLine)
+            ) {
+              //should drawout
+              if (indentAdjust)
+                pStyle += "text-indent:1.5em;";
+              else
+                pStyle += "text-indent:2em;";
+
+            } else {
+              if (!colonHandled) {
+                pStyle += "text-indent:2em;";
+              }
+
+            }
+          if (renderedLine == "[count]") {
+
+            let p = []
+
+            for (const i in countCategory) {
+              p.push(`<span style="color:${countColors[i]};">${countCategory[i]}：${counts[i]}</span>`);
+            }
+            renderedLine = p.join(' | ')
+
+          }
+          renderedLine =
+            "<p" + (pStyle ? (" style='" + pStyle + "'") : "") + ">" + renderedLine + "</p>";
+        }
+        html += renderedLine + "\n";
+      }
+      //note ref
+      {
+        const reg_noterefg = /\[note\]/g;
+        const reg_noteref = /\[note\]/;
+        const note_ref_temp = "<span class=\"ae_noteref\" style=\"vertical-align:super;font-size:x-small;\">[注]</span>";
+        let match;
+        let note_index = 0;
+        while ((match = reg_noterefg.exec(html)) !== null) {
+          const notecontent = notecontents[note_index];
+          let notetitle = "注";
+          let i = notecontent.indexOf('：');
+          if (i > 0 && i <= 4) {
+            notetitle = notecontent.substring(0, i);
+          }
+          html = html.replace(reg_noteref, note_ref_temp.replace("[注]", "[" + notetitle + "]"))
+          note_index++;
+        }
+      }
+
+      return html;
+    }
+  </script>
+</body>
+
+</html>
