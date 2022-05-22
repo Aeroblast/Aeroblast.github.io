@@ -88,7 +88,7 @@
 
 测试：wryyyyyyyyyyyyyyyyyyy啊啊`啊啊`啊
 [color=red]测试[/color]：xxxxx wryyyyyyyyyyyyyyyyyyy啊啊啊啊啊    
-
+[链接](https://aeroblast.github.io/GenHTML/shokei.html)
 </textarea>
   </div>
   <div class="tab">输出HTML：<textarea id="output_html"></textarea></div>
@@ -198,6 +198,7 @@
         [/((?<!<span style=\"word-wrap:break-word;word-break:break-all;\">)(?<!…)[…]{3,99})/, "<span style=\"word-wrap:break-word;word-break:break-all;\">$1</span>"],
         [/((?<!<span style=\"word-wrap:break-word;word-break:break-all;\">)(?<!—)[—]{3,99})/, "<span style=\"word-wrap:break-word;word-break:break-all;\">$1</span>"],
         [/`(.*?)`/, "<span style='text-decoration:underline;'>$1</span>"],
+        [/\[(.*?)\]\((.*?)\)/, "<a href='$2' target='_blank'>$1</a>"]
       ];
       const lines = atxt.split('\n');
       let html = "";
