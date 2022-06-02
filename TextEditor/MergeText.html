@@ -1,0 +1,175 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge Text</title>
+    <link rel="stylesheet" href="lib/codemirror.css">
+    <link rel="stylesheet" href="theme/3024-day.css">
+    <link rel="stylesheet" href="theme/darcula-ae.css">
+    <style>
+        body {
+            background: #101010;
+            color: antiquewhite;
+            font-size: 1em;
+        }
+
+        .CodeMirror {
+            display: inline-block;
+            width: 28%;
+            height: 90vh;
+            margin: 1vh 1vw;
+            padding: 0;
+        }
+
+        #raw {
+            margin-right: 0;
+        }
+
+        #escaped {
+            margin-left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div>性能似乎不太好，建议编辑时用正经的编辑器，只用本页面进行合并微调。</div>
+    <div>
+        <select onchange="selectTheme()" id="theme_select">
+            <option>default</option>
+            <option>3024-day</option>
+            <option selected>darcula-ae</option>
+        </select>
+        <button onclick="TrimBlankAll()">换行全部合并</button>
+        <button onclick="TrimBlankTwo()">换行减半</button>
+    </div>
+    <div>
+        <textarea id="src1"></textarea>
+        <textarea id="src2"></textarea>
+        <textarea id="merged"></textarea>
+    </div>
+    <script src="lib/codemirror.js"></script>
+    <script src="addon/active-line.js"></script>
+    <script src="mode/simple.js"></script>
+    <script>CodeMirror.defineSimpleMode("simplemode", {
+            // The start state contains the rules that are initially used
+            start: [
+            ],
+            comment: [
+            ],
+            meta: {
+                dontIndentStates: ["comment"],
+                lineComment: "##"
+            }
+        });
+        const src1_textarea = document.getElementById("src1")
+        const src2_textarea = document.getElementById("src2")
+        const merged_textarea = document.getElementById("merged")
+        const src1_editor = CodeMirror.fromTextArea(src1_textarea, {
+            lineNumbers: true,
+            lineWrapping: true,
+            styleActiveLine: true,
+            mode: "simplemode"
+        });
+        const src2_editor = CodeMirror.fromTextArea(src2_textarea, {
+            lineNumbers: true,
+            lineWrapping: true,
+            styleActiveLine: true,
+            mode: "simplemode"
+        });
+        const merged_editor = CodeMirror.fromTextArea(merged_textarea, {
+            lineNumbers: true,
+            lineWrapping: true,
+            styleActiveLine: true,
+            mode: "simplemode"
+        });
+        src1_editor.on("change", function (cm, change) {
+            Update();
+        })
+        src2_editor.on("change", function (cm, change) {
+            Update();
+        })
+        src1_editor.on("cursorActivity", (cm) => SyncCursor(cm, src2_editor));
+        src2_editor.on("cursorActivity", (cm) => SyncCursor(cm, src1_editor));
+        merged_editor.on("cursorActivity", (cm) => SyncCursorMerged(cm));
+        const theme_select = document.getElementById("theme_select");
+        function selectTheme() {
+            let theme = theme_select.options[theme_select.selectedIndex].textContent;
+            src1_editor.setOption("theme", theme);
+            src2_editor.setOption("theme", theme);
+            merged_editor.setOption("theme", theme);
+        }
+        selectTheme()
+
+
+        function Update() {
+
+            let src1 = src1_editor.getValue().split('\n');
+            let src2 = src2_editor.getValue().split('\n');
+            let src1_lead = "生：";
+            let src2_lead = "熟：";
+            let sep = "======="
+            let r = "";
+            let i = 0;
+            while (i < src1.length || i < src2.length) {
+                let c1 = "", c2 = "";
+                if (i < src1.length) {
+                    c1 = src1[i];
+                }
+                if (i < src2.length) {
+                    c2 = src2[i];
+                }
+                if (c1 || c2) {
+                    r += `${src1_lead}${c1}\n${src2_lead}${c2}\n${sep}\n`;
+                } else {
+                    r += `\n\n\n`;
+                }
+                i++;
+            }
+
+            merged_editor.setValue(r);
+
+        }
+
+        function SyncCursor(cm, target) {
+            if (!cm.hasFocus()) return;
+            let { line, ch } = cm.getCursor();
+            let { c_line, c_ch } = target.getCursor();
+            if (c_ch == 0) return;
+            if (line != c_line) {
+
+                target.setCursor({ line: line, ch: 0 });
+                merged_editor.setCursor({ line: line * 3, ch: 0 });
+            }
+        }
+        function SyncCursorMerged(cm) {
+            if (!cm.hasFocus()) return;
+            let { line, ch } = cm.getCursor();
+            let s = line % 3;
+            let target = [src1_editor, src2_editor, null][s];
+            if (target) {
+                let t_line = Math.floor(line / 3);
+                let { c_line, c_ch } = target.getCursor();
+                if (t_line != c_line) {
+                    target.setCursor({ line: t_line });
+                }
+            }
+        }
+        function TrimBlankAll() {
+            let src1 = src1_editor.getValue();
+            let src2 = src2_editor.getValue();
+            src1_editor.setValue(src1.replace(/\n+/g, "\n"));
+            src2_editor.setValue(src2.replace(/\n+/g, "\n"));
+        }
+        function TrimBlankTwo() {
+            let src1 = src1_editor.getValue();
+            let src2 = src2_editor.getValue();
+            src1_editor.setValue(src1.replace(/\n{2}/g, "\n"));
+            src2_editor.setValue(src2.replace(/\n{2}/g, "\n"));
+        }
+
+
+    </script>
+</body>
+
+</html>
