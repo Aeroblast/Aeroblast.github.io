@@ -209,7 +209,7 @@
         [/((?<!<span style=\"word-wrap:break-word;word-break:break-all;\">)(?<!…)[…]{3,99})/, "<span style=\"word-wrap:break-word;word-break:break-all;\">$1</span>"],
         [/((?<!<span style=\"word-wrap:break-word;word-break:break-all;\">)(?<!—)[—]{3,99})/, "<span style=\"word-wrap:break-word;word-break:break-all;\">$1</span>"],
         [/`(.*?)`/, "<span style='text-decoration:underline;'>$1</span>"],
-        [/\[(.*?)\]\((.*?)\)/, "<a href='$2' target='_blank'>$1</a>"]
+        [/(?<!@)\[(.*?)\]\((.*?)\)/, "<a href='$2' target='_blank'>$1</a>"]
       ];
       const lines = atxt.split('\n');
       let html = "";
