@@ -120,7 +120,7 @@
                     c2 = src2[i];
                 }
                 if (c1 || c2) {
-                    r += `${src1_lead}${c1}\n${src2_lead}${c2}\n${sep}\n`;
+                    r += `${src1_lead}${c1.trim()}\n${src2_lead}${c2.trim()}\n${sep}\n`;
                 } else {
                     r += `\n\n\n`;
                 }
